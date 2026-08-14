@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kiki Business Kit 1.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --accent: #c45c26;
+      --accent-soft: rgba(196, 92, 38, .12);
+      --ink: #141a22;
+      --bg: #f3eee4;
+      --soft: #5c6570;
+      --card: #fffaf3;
+      --line: rgba(20, 26, 34, .08);
+      --dark: #141a22;
+      --cream: #f3eee4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); }
+    body {
+      font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(90% 70% at 110% -10%, rgba(196, 92, 38, .10), transparent 52%),
+        radial-gradient(70% 60% at -15% 110%, rgba(20, 26, 34, .06), transparent 48%),
+        var(--bg);
+    }
+
+    #viewport { position: fixed; inset: 0 0 64px 0; overflow: hidden; }
+    .slide {
+      position: absolute; inset: 0;
+      padding: clamp(36px, 5vh, 88px) clamp(44px, 5.8vw, 128px);
+      display: none; flex-direction: column;
+      opacity: 0; transition: opacity .35s ease;
+    }
+    .slide.active { display: flex; opacity: 1; }
+
+    .slide          { font-size: clamp(28px, 2.5vw, 42px); line-height: 1.4; }
+    .slide h1       { font-size: clamp(52px, 5.6vw, 96px); line-height: 1.08; letter-spacing: -.03em; font-weight: 800; }
+    .slide h2       { font-size: clamp(34px, 3.1vw, 56px); line-height: 1.15; font-weight: 800; letter-spacing: -.02em; }
+    .slide h3       { font-size: clamp(28px, 2.3vw, 40px); line-height: 1.2; font-weight: 700; }
+    .slide .lead    { font-size: clamp(28px, 2.6vw, 46px); color: var(--soft); }
+    .slide .caption { font-size: clamp(22px, 1.9vw, 34px); color: var(--soft); }
+    .slide ul       { list-style: none; display: flex; flex-direction: column; gap: clamp(12px, 1.8vh, 22px); }
+    .slide li       { display: flex; gap: .5em; align-items: flex-start; }
+    .slide li::before {
+      content: ''; flex: none; width: .38em; height: .38em; margin-top: .48em;
+      border-radius: .1em; background: var(--accent);
+    }
+
+    .slide.dark {
+      color: var(--cream);
+      background:
+        radial-gradient(80% 70% at 100% 0%, rgba(196, 92, 38, .28), transparent 50%),
+        radial-gradient(60% 50% at 0% 100%, rgba(255, 250, 243, .06), transparent 46%),
+        var(--dark);
+    }
+    .slide.dark .lead,
+    .slide.dark .caption { color: rgba(243, 238, 228, .72); }
+    .slide.dark .badge {
+      background: rgba(196, 92, 38, .22);
+      color: #f3c4a8;
+    }
+
+    .badge {
+      display: inline-flex; align-items: center;
+      background: var(--accent-soft); color: var(--accent);
+      font-weight: 700; padding: .4em .8em; border-radius: 999px;
+      font-size: clamp(20px, 1.6vw, 32px);
+    }
+    .kicker {
+      font-size: clamp(20px, 1.6vw, 30px);
+      font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--accent);
+    }
+    .slide.dark .kicker { color: #e08a58; }
+
+    .grid-2 {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(16px, 2.2vw, 32px); width: 100%;
+    }
+    .grid-3 {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: clamp(14px, 1.8vw, 28px); width: 100%;
+    }
+    .grid-4 {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(14px, 1.8vw, 28px); width: 100%;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: clamp(16px, 1.6vw, 28px);
+      padding: clamp(18px, 2.2vh, 32px);
+      display: flex; flex-direction: column; gap: clamp(8px, 1.2vh, 16px);
+      min-width: 0;
+    }
+    .card h3 { color: var(--ink); }
+    .card .meta { font-size: clamp(24px, 1.9vw, 36px); color: var(--accent); font-weight: 700; }
+    .card p, .card li {
+      font-size: clamp(24px, 2vw, 40px);
+      line-height: 1.32;
+      overflow-wrap: break-word;
+    }
+    .card ul { gap: clamp(6px, 1vh, 12px); }
+    .card li::before { margin-top: .42em; }
+
+    .steps { gap: clamp(10px, 1.5vh, 18px); }
+    .steps li::before { display: none; }
+    .steps li { align-items: flex-start; gap: clamp(14px, 1.6vw, 24px); }
+    .step-num {
+      flex: none; font-weight: 800; color: var(--accent);
+      font-size: clamp(28px, 2.4vw, 40px); min-width: 1.6em;
+      letter-spacing: -.02em;
+    }
+    .step-body { min-width: 0; }
+    .step-body strong { display: block; font-weight: 700; }
+    .step-body span {
+      display: block; color: var(--soft);
+      font-size: clamp(24px, 2vw, 40px);
+      margin-top: .15em;
+    }
+
+    .flow {
+      display: flex; align-items: center; gap: clamp(8px, 1vw, 16px);
+      flex-wrap: wrap;
+    }
+    .flow span {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 999px; padding: .35em .8em; font-weight: 700;
+      font-size: clamp(24px, 2vw, 40px);
+    }
+    .flow i { color: var(--accent); font-style: normal; font-weight: 800; }
+
+    .compare {
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      gap: clamp(16px, 2vw, 32px); align-items: center; width: 100%;
+    }
+    .mail {
+      font-family: ui-monospace, 'Be Vietnam Pro', monospace;
+      font-weight: 700; font-size: clamp(26px, 2.4vw, 42px);
+    }
+    .mail.bad { color: var(--soft); text-decoration: line-through; text-decoration-thickness: 2px; }
+    .mail.good { color: var(--accent); }
+
+    table.dense {
+      width: 100%; border-collapse: collapse;
+      font-size: clamp(24px, 2vw, 40px);
+    }
+    table.dense th, table.dense td {
+      text-align: left; padding: .42em .5em;
+      border-bottom: 1px solid var(--line);
+    }
+    table.dense th { color: var(--soft); font-weight: 600; font-size: .86em; }
+    table.dense td { font-weight: 500; }
+    table.dense tr.featured td {
+      background: var(--accent-soft);
+      font-weight: 700;
+    }
+    table.dense .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+    .price-hero {
+      font-size: clamp(40px, 4.2vw, 72px);
+      font-weight: 800; letter-spacing: -.03em; color: var(--accent);
+    }
+
+    .plus {
+      display: flex; align-items: center; justify-content: center;
+      font-size: clamp(36px, 3.4vw, 56px); font-weight: 800; color: var(--accent);
+    }
+
+    .shot-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(12px, 1.6vw, 24px);
+      width: 100%; flex: 1; min-height: 32vh;
+    }
+    .shot-row img {
+      display: block; width: 100%; height: 100%; min-height: 32vh;
+      object-fit: cover; object-position: top left;
+      border-radius: clamp(12px, 1.2vw, 20px);
+      border: 1px solid var(--line); background: var(--card);
+    }
+
+    .foot {
+      margin-top: auto;
+      font-size: clamp(22px, 1.9vw, 34px);
+      color: var(--soft);
+    }
+    .slide.dark .foot { color: rgba(243, 238, 228, .72); }
+
+    #nav {
+      position: fixed; left: 0; right: 0; bottom: 0; height: 64px; z-index: 50;
+      display: flex; align-items: center; justify-content: center; gap: 20px;
+      background: rgba(255, 250, 243, .9); backdrop-filter: blur(10px);
+      border-top: 1px solid var(--line);
+    }
+    #nav button {
+      cursor: pointer; border: none; background: none; color: var(--ink);
+      padding: 8px 12px; font-size: 18px; border-radius: 10px;
+      font-family: inherit;
+    }
+    #nav button:disabled { opacity: .25; cursor: default; }
+    #dots { display: flex; gap: 8px; align-items: center; max-width: 60vw; overflow-x: auto; }
+    .dot {
+      width: 10px; height: 10px; border-radius: 999px; background: #d5c8b4;
+      border: none; cursor: pointer; transition: all .2s; flex: none;
+    }
+    .dot.active { width: 26px; background: var(--accent); }
+    #counter {
+      font-size: 18px; color: var(--soft);
+      font-variant-numeric: tabular-nums; min-width: 64px; text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="viewport">
+
+    <!-- 1. Cover -->
+    <section class="slide dark active" style="justify-content: space-between;">
+      <div>
+        <span class="badge">Phiên bản 1.0</span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap: clamp(16px, 2.4vh, 28px);">
+        <p class="kicker">KikiCMS · KikiMail</p>
+        <h1>Kiki Business Kit</h1>
+        <p class="lead" style="max-width: 22em;">Bộ giải pháp chuyển đổi số dành cho doanh nghiệp</p>
+      </div>
+      <p class="caption">Từ website đến email doanh nghiệp — một hệ sinh thái gọn để bắt đầu và phát triển hiện diện số.</p>
+    </section>
+
+    <!-- 2. Why kit -->
+    <section class="slide" style="gap: clamp(20px, 3vh, 40px); justify-content: center;">
+      <span class="badge">Mở đầu</span>
+      <h2>Doanh nghiệp không chỉ cần một website</h2>
+      <p class="lead" style="max-width: 28em;">Hiện diện chuyên nghiệp trên Internet thường phải làm việc với nhiều đơn vị khác nhau.</p>
+      <div class="flow" aria-hidden="true">
+        <span>Website</span><i>·</i>
+        <span>Tên miền</span><i>·</i>
+        <span>Hosting</span><i>·</i>
+        <span>Bảo trì</span><i>·</i>
+        <span>Email doanh nghiệp</span>
+      </div>
+      <p class="foot">Kiki Business Kit gộp những nhu cầu đó thành một bộ giải pháp — dễ triển khai, dễ vận hành, dễ mở rộng.</p>
+    </section>
+
+    <!-- 3. Section KikiCMS -->
+    <section class="slide dark" style="justify-content: space-between;">
+      <p class="kicker">Phần 01</p>
+      <div>
+        <h1>KikiCMS</h1>
+        <p class="lead" style="margin-top: .4em; max-width: 18em;">Website và nền tảng quản trị</p>
+      </div>
+      <p class="caption">Từ ý tưởng đến một website hoàn chỉnh</p>
+    </section>
+
+    <!-- 4. KikiCMS types -->
+    <section class="slide" style="gap: clamp(16px, 2.4vh, 28px);">
+      <span class="badge">KikiCMS</span>
+      <h2>Từ ý tưởng đến website hoàn chỉnh</h2>
+      <p class="caption" style="margin-top: -.4em;">Tư vấn, thiết kế, xây dựng và vận hành — phù hợp với:</p>
+      <div class="grid-4" style="flex: 1;">
+        <div class="card">
+          <h3>Landing Page</h3>
+          <p>Giới thiệu chiến dịch, sản phẩm hoặc dịch vụ.</p>
+        </div>
+        <div class="card">
+          <h3>Corporate Website</h3>
+          <p>Website giới thiệu doanh nghiệp và thương hiệu.</p>
+        </div>
+        <div class="card">
+          <h3>Brand Website</h3>
+          <p>Xây dựng hình ảnh và hiện diện thương hiệu trực tuyến.</p>
+        </div>
+        <div class="card">
+          <h3>Sales Website</h3>
+          <p>Website bán hàng với chức năng thương mại cơ bản.</p>
+        </div>
+      </div>
+      <p class="foot">Không chỉ bàn giao website. KikiCMS đồng hành từ bài toán đến vận hành.</p>
+    </section>
+
+    <!-- 5. Process -->
+    <section class="slide" style="gap: clamp(14px, 2vh, 24px);">
+      <span class="badge">Quy trình</span>
+      <h2>Từ ý tưởng đến sản phẩm</h2>
+      <ul class="steps">
+        <li>
+          <span class="step-num">01</span>
+          <div class="step-body"><strong>Phân tích</strong><span>Nhu cầu, chức năng, nội dung và cấu trúc menu.</span></div>
+        </li>
+        <li>
+          <span class="step-num">02</span>
+          <div class="step-body"><strong>Thiết kế</strong><span>Giao diện trên Figma, bám nhận diện và trải nghiệm.</span></div>
+        </li>
+        <li>
+          <span class="step-num">03</span>
+          <div class="step-body"><strong>Phát triển</strong><span>Xây trên bộ code KikiCMS với chức năng nền tảng.</span></div>
+        </li>
+        <li>
+          <span class="step-num">04</span>
+          <div class="step-body"><strong>Mở rộng</strong><span>Thêm chức năng riêng theo bài toán thực tế.</span></div>
+        </li>
+        <li>
+          <span class="step-num">05</span>
+          <div class="step-body"><strong>Vận hành</strong><span>Hosting, bảo trì và xử lý vấn đề phát sinh.</span></div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 6. Three architectures -->
+    <section class="slide" style="gap: clamp(12px, 1.8vh, 22px);">
+      <span class="badge">Công nghệ</span>
+      <h2>Ba lựa chọn kiến trúc</h2>
+      <p class="caption" style="margin-top: -.3em;">Không phải doanh nghiệp nào cũng cần cùng một kiến trúc.</p>
+      <div class="grid-3" style="flex: 1;">
+        <div class="card">
+          <p class="meta">01</p>
+          <h3>KikiCMS Standard</h3>
+          <p>WordPress + lớp bảo mật bổ sung. Phù hợp phần lớn website doanh nghiệp.</p>
+          <ul>
+            <li>Quản trị nội dung thuận tiện</li>
+            <li>Dễ mở rộng, chi phí hợp lý</li>
+            <li>Dễ bàn giao và vận hành</li>
+          </ul>
+        </div>
+        <div class="card">
+          <p class="meta">02</p>
+          <h3>KikiCMS Headless</h3>
+          <p>WordPress quản trị nội dung. Nuxt / Next / Vinext làm giao diện.</p>
+          <ul>
+            <li>Trải nghiệm truy cập nhanh</li>
+            <li>Tách quản trị và giao diện</li>
+            <li>Linh hoạt khi phát triển frontend</li>
+          </ul>
+        </div>
+        <div class="card">
+          <p class="meta">03</p>
+          <h3>KikiCMS Advanced</h3>
+          <p>Cloudflare + Worker + framework JS. Microservice tách module.</p>
+          <ul>
+            <li>Linh hoạt hoàn toàn khi phát triển</li>
+            <li>Hiệu năng và khả năng mở rộng cao</li>
+            <li>Phù hợp bài toán yêu cầu cao</li>
+          </ul>
+        </div>
+      </div>
+      <p class="foot">Tư vấn theo nhu cầu thực tế — không ép một công nghệ cho mọi bài toán.</p>
+    </section>
+
+    <!-- 7. Cost -->
+    <section class="slide" style="gap: clamp(16px, 2.4vh, 28px);">
+      <span class="badge">Chi phí</span>
+      <h2>Mỗi website là một bài toán khác nhau</h2>
+      <p class="lead" style="font-size: clamp(26px, 2.3vw, 40px); max-width: 28em;">Không có mức giá cố định cho mọi dự án. Báo giá theo phạm vi triển khai thực tế.</p>
+      <div class="grid-4">
+        <div class="card"><h3>Quy mô</h3><p>Số trang và cấu trúc nội dung.</p></div>
+        <div class="card"><h3>Thiết kế UI/UX</h3><p>Mức độ thiết kế và tùy biến giao diện.</p></div>
+        <div class="card"><h3>Chức năng</h3><p>Tiêu chuẩn và chức năng phát triển riêng.</p></div>
+        <div class="card"><h3>Công nghệ</h3><p>Standard, Headless hoặc Advanced.</p></div>
+      </div>
+      <p class="foot">Cộng thêm yêu cầu tích hợp: API, hệ thống ngoài, đặc thù. Bạn đưa bài toán — KikiCMS đề xuất giải pháp và báo giá.</p>
+    </section>
+
+    <!-- 8. Domain -->
+    <section class="slide" style="gap: clamp(20px, 3vh, 36px); justify-content: center;">
+      <span class="badge">Tên miền</span>
+      <h2>Chưa có tên miền? Hỗ trợ từ đầu</h2>
+      <p class="lead" style="max-width: 24em;">Tên miền là địa chỉ của thương hiệu trên Internet.</p>
+      <div class="flow">
+        <span>Tư vấn</span><i>→</i>
+        <span>Tìm kiếm</span><i>→</i>
+        <span>Lựa chọn</span><i>→</i>
+        <span>Đăng ký</span>
+      </div>
+      <ul>
+        <li>Tư vấn tên miền phù hợp với doanh nghiệp và thương hiệu</li>
+        <li>Kiểm tra khả năng đăng ký và phần mở rộng</li>
+        <li>Thủ tục tại nhà cung cấp chính hãng, cấu hình với website</li>
+      </ul>
+      <p class="foot">Bạn tập trung thương hiệu. KikiCMS xử lý phần kỹ thuật phía sau.</p>
+    </section>
+
+    <!-- 9. Hosting -->
+    <section class="slide" style="gap: clamp(12px, 1.8vh, 22px);">
+      <span class="badge">Hosting</span>
+      <h2>KikiCMS Close Hosting</h2>
+      <p class="caption">Không chỉ là hosting. Đây là nơi website được chăm sóc.</p>
+      <div class="grid-2" style="flex: 1; align-items: stretch;">
+        <div class="card" style="justify-content: center;">
+          <p class="meta">Năm đầu</p>
+          <p class="price-hero">Miễn phí 100%</p>
+          <p>Khi dùng cùng dịch vụ xây dựng website KikiCMS, theo điều kiện áp dụng.</p>
+        </div>
+        <div class="card">
+          <h3>Các năm tiếp theo</h3>
+          <table class="dense">
+            <thead>
+              <tr><th>Dung lượng</th><th>Chi phí</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>2 GB</td><td class="num">1.200.000đ / năm</td></tr>
+              <tr><td>3 GB</td><td class="num">1.800.000đ / năm</td></tr>
+              <tr><td>5 GB</td><td class="num">2.400.000đ / năm</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="foot">Đi kèm: băng thông không tính theo lưu lượng · bảo trì · xử lý sự cố · hỗ trợ kỹ thuật vận hành.</p>
+    </section>
+
+    <!-- 10. WordPress Care -->
+    <section class="slide" style="gap: clamp(12px, 1.8vh, 22px);">
+      <span class="badge">WordPress Support</span>
+      <h2>KikiCMS WordPress Care</h2>
+      <p class="caption">Website không nhất thiết do KikiCMS xây. Kiểm tra và xử lý sự cố WordPress đang vận hành.</p>
+      <p class="caption" style="margin-top: -.6em;">Lỗi · mã độc · virus · bảo mật · hoạt động bất thường</p>
+      <div class="grid-2" style="flex: 1;">
+        <div class="card">
+          <p class="meta">Basic — 1.500.000đ</p>
+          <ul>
+            <li>Kiểm tra và xử lý sự cố</li>
+            <li>Xử lý bảo mật, mã độc/virus trong phạm vi dịch vụ</li>
+            <li>Khắc phục lỗi website</li>
+            <li>Bảo hành 07 ngày</li>
+          </ul>
+        </div>
+        <div class="card">
+          <p class="meta">Advanced — 3.000.000đ</p>
+          <ul>
+            <li>Bao gồm gói Basic</li>
+            <li>Bảo hành 30 ngày</li>
+            <li>Theo dõi website sau xử lý</li>
+            <li>Báo cáo 07 ngày/lần trong thời gian bảo hành</li>
+          </ul>
+        </div>
+      </div>
+      <p class="foot">Xử lý sự cố chỉ là bước đầu. Mục tiêu: website vận hành ổn định trở lại.</p>
+    </section>
+
+    <!-- 11. Section KikiMail -->
+    <section class="slide dark" style="justify-content: space-between;">
+      <p class="kicker">Phần 02</p>
+      <div>
+        <h1>KikiMail</h1>
+        <p class="lead" style="margin-top: .4em; max-width: 18em;">Email doanh nghiệp theo tên miền riêng</p>
+      </div>
+      <p class="caption">Website chuyên nghiệp cần một email chuyên nghiệp</p>
+    </section>
+
+    <!-- 12. KikiMail intro -->
+    <section class="slide" style="gap: clamp(10px, 1.6vh, 18px);">
+      <span class="badge">KikiMail</span>
+      <h2>Đổi Gmail cá nhân lấy email công ty</h2>
+      <div class="compare">
+        <div class="card" style="text-align: center; align-items: center; padding: clamp(10px, 1.4vh, 18px);">
+          <p class="caption">Thay vì</p>
+          <p class="mail bad">tenban@gmail.com</p>
+        </div>
+        <div class="plus" aria-hidden="true">→</div>
+        <div class="card" style="text-align: center; align-items: center; padding: clamp(10px, 1.4vh, 18px);">
+          <p class="caption">Doanh nghiệp dùng</p>
+          <p class="mail good">tenban@congty.com</p>
+        </div>
+      </div>
+      <div class="shot-row">
+        <img src="assets/hop-thu-den.png" alt="KikiMail — hộp thư đến" />
+        <img src="assets/phan-tich.png" alt="KikiMail — phân tích tên miền" />
+      </div>
+      <p class="foot">Tạo và quản lý email theo tên miền riêng trên hạ tầng Cloudflare — ổn định, dễ dùng, tối ưu chi phí.</p>
+    </section>
+
+    <!-- 13. Features -->
+    <section class="slide" style="gap: clamp(14px, 2vh, 24px);">
+      <span class="badge">Tính năng</span>
+      <h2>KikiMail có gì?</h2>
+      <div class="grid-3" style="flex: 1;">
+        <div class="card">
+          <h3>Gửi email</h3>
+          <p>Giao dịch, thông báo, gửi hàng loạt và tệp đính kèm.</p>
+        </div>
+        <div class="card">
+          <h3>Người dùng &amp; hộp thư</h3>
+          <p>Tên miền, tài khoản, phân quyền, hộp thư tập trung.</p>
+        </div>
+        <div class="card">
+          <h3>Tệp đính kèm</h3>
+          <p>Gửi, nhận và lưu trữ tệp, truy xuất thuận tiện.</p>
+        </div>
+        <div class="card">
+          <h3>Dashboard</h3>
+          <p>Theo dõi gửi nhận và các chỉ số vận hành.</p>
+        </div>
+        <div class="card">
+          <h3>Phân quyền &amp; bảo mật</h3>
+          <p>Kiểm soát truy cập theo vai trò trong doanh nghiệp.</p>
+        </div>
+        <div class="card">
+          <h3>Hiệu năng &amp; chi phí</h3>
+          <p>Hạ tầng Cloudflare: truy cập, ổn định, chi phí vận hành.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 14. Pricing -->
+    <section class="slide" style="gap: clamp(10px, 1.6vh, 20px);">
+      <span class="badge">Bảng giá</span>
+      <h2>Bắt đầu từ 19.000đ/tháng</h2>
+      <table class="dense">
+        <thead>
+          <tr>
+            <th>Gói</th>
+            <th>Mailbox</th>
+            <th>Dung lượng</th>
+            <th>Email gửi/tháng</th>
+            <th>Giá/tháng</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>PRO 1</td><td class="num">1</td><td class="num">1 GB</td><td class="num">200</td><td class="num">19.000đ</td></tr>
+          <tr><td>PRO 2</td><td class="num">5</td><td class="num">5 GB</td><td class="num">1.000</td><td class="num">39.000đ</td></tr>
+          <tr class="featured"><td>PRO 3 ★</td><td class="num">10</td><td class="num">15 GB</td><td class="num">2.500</td><td class="num">69.000đ</td></tr>
+          <tr><td>PRO 4</td><td class="num">20</td><td class="num">40 GB</td><td class="num">5.000</td><td class="num">129.000đ</td></tr>
+          <tr><td>PRO 5</td><td class="num">50</td><td class="num">100 GB</td><td class="num">10.000</td><td class="num">199.000đ</td></tr>
+          <tr><td>PRO 6</td><td class="num">100</td><td class="num">200 GB</td><td class="num">20.000</td><td class="num">299.000đ</td></tr>
+        </tbody>
+      </table>
+      <p class="foot">PRO 3 — phổ biến nhất. Thông số khớp bảng giá công khai hiện tại của KikiMail.</p>
+    </section>
+
+    <!-- 15. Nana Lab -->
+    <section class="slide" style="gap: clamp(18px, 2.6vh, 32px); justify-content: center;">
+      <span class="badge">Đơn vị đại diện</span>
+      <h2>Nana Lab</h2>
+      <p class="lead" style="max-width: 24em;">Đồng hành từ tư vấn đến vận hành.</p>
+      <p style="max-width: 28em; font-size: clamp(26px, 2.2vw, 40px);">
+        Công ty TNHH Dịch vụ Truyền thông và Sáng tạo Nana Lab đại diện và hỗ trợ khách hàng Kiki Business Kit — KikiCMS và KikiMail.
+      </p>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Điện thoại</h3>
+          <p>036.6967.084</p>
+          <p>098.3711.587</p>
+        </div>
+        <div class="card">
+          <h3>Email</h3>
+          <p>info@kikicms.com</p>
+          <p>info@kikimail.vn</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 16. Close -->
+    <section class="slide dark" style="justify-content: space-between;">
+      <span class="badge">Kết</span>
+      <div style="display:flex; flex-direction:column; gap: clamp(16px, 2.4vh, 28px);">
+        <h1 style="font-size: clamp(44px, 4.6vw, 80px);">Một bộ giải pháp cho hiện diện số</h1>
+        <div class="grid-2">
+          <div>
+            <h3 style="color: #e08a58; margin-bottom: .35em;">KikiCMS</h3>
+            <p class="caption">Thiết kế · phát triển · domain · hosting · bảo trì</p>
+          </div>
+          <div>
+            <h3 style="color: #e08a58; margin-bottom: .35em;">KikiMail</h3>
+            <p class="caption">Email tên miền · hộp thư · gửi nhận · người dùng</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="lead" style="max-width: 22em;">Website để khách tìm thấy bạn. Email để doanh nghiệp giao tiếp chuyên nghiệp.</p>
+        <p class="caption" style="margin-top: .6em;">Bắt đầu hiện diện số. Sẵn sàng để phát triển.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <nav id="nav">
+    <button id="prev" aria-label="Slide trước">&larr; Trước</button>
+    <div id="dots"></div>
+    <span id="counter"></span>
+    <button id="next" aria-label="Slide sau">Sau &rarr;</button>
+  </nav>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const dotsBox = document.getElementById('dots');
+    const counter = document.getElementById('counter');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    let current = slides.findIndex(s => s.classList.contains('active'));
+    if (current < 0) current = 0;
+
+    slides.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'dot';
+      d.setAttribute('aria-label', 'Slide ' + (i + 1));
+      d.addEventListener('click', () => go(i));
+      dotsBox.appendChild(d);
+    });
+    const dots = Array.from(dotsBox.children);
+
+    function render() {
+      slides.forEach((s, i) => s.classList.toggle('active', i === current));
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+      counter.textContent = (current + 1) + ' / ' + slides.length;
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === slides.length - 1;
+    }
+    function go(i) { current = Math.max(0, Math.min(slides.length - 1, i)); render(); }
+
+    prevBtn.addEventListener('click', () => go(current - 1));
+    nextBtn.addEventListener('click', () => go(current + 1));
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(current + 1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(current - 1); }
+      else if (e.key === 'Home') go(0);
+      else if (e.key === 'End') go(slides.length - 1);
+    });
+
+    render();
+  </script>
+</body>
+</html>

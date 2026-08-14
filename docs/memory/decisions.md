@@ -16,4 +16,8 @@ Ghi ngắn gọn theo thời gian để truy vết quyết định kỹ thuật.
 
 ## Entries
 
-*(Thêm mục mới phía dưới khi có quyết định đã chấp nhận.)*
+- Date: 2026-08-14
+- Decision: Artifact slide = `exports/slides/kiki-business-kit.{html,pdf}`; 16 slide (thêm divider CMS/Mail + tách Nana Lab so với 13 mục đánh số trong draft). Sửa `Cloudfare` → `Cloudflare`.
+- Reason: Trình chiếu cần nhịp phần; draft là raw notes.
+- Impact: Khi giá/copy đổi, sửa HTML rồi export lại PDF.
+- Owner: tech-lead

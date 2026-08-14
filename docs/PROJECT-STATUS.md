@@ -8,15 +8,15 @@
 
 | Field | Value |
 |-------|-------|
-| Mode | ACTIVE / DONE / MAINTAIN |
-| Current phase | Phase N - short name |
-| Current epic | EPIC-xxx — title (or empty) |
-| Current task | TASK-xxx — title (or empty) |
-| Related epic plan | `docs/plan/EPIC-xxx-slug.md` (optional) |
-| Related design | `docs/design/...` (optional) |
-| Phase status | planned / in-progress / qa / done / maintain |
-| Last meaningful update | YYYY-MM-DD |
-| Owner | tech-lead / user |
+| Mode | ACTIVE |
+| Current phase | Phase 1 — Deck Kiki Business Kit 1.0 |
+| Current epic | |
+| Current task | TASK-001 — Deck HTML + PDF |
+| Related epic plan | Input: `docs/plan/draft-slides.md` |
+| Related design | Slidewright design-system (không có Figma brand) |
+| Phase status | qa |
+| Last meaningful update | 2026-08-14 |
+| Owner | tech-lead |
 
 ## Status definitions
 
@@ -43,8 +43,8 @@ Project
 
 | Phase | Status | Summary | Notes |
 |-------|--------|---------|-------|
-| Phase 1 | done / maintain / active |  |  |
-| Phase 2 | planned / in-progress / done |  |  |
+| Phase 1 | qa | Deck Kiki Business Kit 1.0 (HTML + PDF) | Artifact: `exports/slides/` |
+| Phase 2 | planned |  |  |
 
 ## Manual UI / pixel adjustments
 
