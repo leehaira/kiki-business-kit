@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agent Team Template</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --accent: #0f766e;
+      --accent-soft: rgba(15, 118, 110, .12);
+      --ink: #15202b;
+      --bg: #eef2f6;
+      --soft: #5b6b7c;
+      --card: #ffffff;
+      --line: rgba(21, 32, 43, .08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(120% 80% at 100% -10%, rgba(15, 118, 110, .14), transparent 55%),
+        radial-gradient(90% 70% at -10% 100%, rgba(30, 64, 175, .08), transparent 50%),
+        var(--bg);
+    }
+    h1, h2, h3 { font-family: 'Manrope', system-ui, sans-serif; }
+
+    #viewport { position: fixed; inset: 0 0 64px 0; overflow: hidden; }
+    .slide {
+      position: absolute; inset: 0;
+      padding: clamp(40px, 5.5vh, 96px) clamp(48px, 6.2vw, 140px);
+      display: none; flex-direction: column;
+      opacity: 0; transition: opacity .35s ease;
+    }
+    .slide.active { display: flex; opacity: 1; }
+
+    .slide          { font-size: clamp(28px, 2.6vw, 44px); line-height: 1.45; }
+    .slide h1       { font-size: clamp(52px, 5.8vw, 92px); line-height: 1.12; letter-spacing: -0.01em; font-weight: 700; }
+    .slide h2       { font-size: clamp(36px, 3.2vw, 56px); line-height: 1.15; font-weight: 700; letter-spacing: -0.01em; }
+    .slide .lead    { font-size: clamp(30px, 2.9vw, 48px); color: var(--soft); }
+    .slide .caption { font-size: clamp(22px, 1.9vw, 36px); color: var(--soft); }
+    .slide ul       { list-style: none; display: flex; flex-direction: column; gap: clamp(16px, 2.4vh, 28px); }
+    .slide li       { display: flex; gap: .55em; align-items: flex-start; }
+    .slide li::before {
+      content: ''; flex: none; width: .42em; height: .42em; margin-top: .5em;
+      border-radius: .12em; background: var(--accent);
+    }
+    .badge {
+      display: inline-flex; align-items: center;
+      background: var(--accent-soft); color: var(--accent);
+      font-weight: 700; padding: .45em .85em; border-radius: 999px;
+      font-size: clamp(20px, 1.7vw, 32px);
+    }
+    .grid-2 {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(20px, 3vw, 40px); width: 100%;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: clamp(20px, 2vw, 32px);
+      padding: clamp(24px, 3vh, 40px);
+      display: flex; flex-direction: column; gap: clamp(14px, 2vh, 24px);
+    }
+    .card h3 {
+      font-size: clamp(28px, 2.4vw, 40px);
+      color: var(--accent); font-weight: 700;
+    }
+    .card ul { gap: clamp(12px, 1.8vh, 20px); }
+    .step-num {
+      font-family: 'Manrope', system-ui, sans-serif;
+      font-weight: 800; color: var(--accent);
+      min-width: 1.4em;
+    }
+    .steps li::before { display: none; }
+    .steps li { align-items: baseline; }
+    .slide li,
+    .slide .lead,
+    .card {
+      min-width: 0;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .slide code {
+      font-size: 0.92em;
+      white-space: normal;
+      overflow-wrap: break-word;
+      word-break: normal;
+    }
+    .slide .lead-long {
+      font-size: clamp(26px, 2.4vw, 40px);
+      line-height: 1.4;
+      max-width: min(28em, 100%);
+    }
+    .slide .nowrap-prefer {
+      white-space: normal;
+    }
+
+    #nav {
+      position: fixed; left: 0; right: 0; bottom: 0; height: 64px; z-index: 50;
+      display: flex; align-items: center; justify-content: center; gap: 20px;
+      background: rgba(255, 255, 255, .88); backdrop-filter: blur(10px);
+      border-top: 1px solid var(--line);
+    }
+    #nav button {
+      cursor: pointer; border: none; background: none; color: var(--ink);
+      padding: 8px 12px; font-size: 18px; border-radius: 10px;
+    }
+    #nav button:disabled { opacity: .25; cursor: default; }
+    #dots { display: flex; gap: 8px; align-items: center; max-width: 60vw; overflow-x: auto; }
+    .dot {
+      width: 10px; height: 10px; border-radius: 999px; background: #c5d0db;
+      border: none; cursor: pointer; transition: all .2s; flex: none;
+    }
+    .dot.active { width: 26px; background: var(--accent); }
+    #counter {
+      font-size: 18px; color: var(--soft);
+      font-variant-numeric: tabular-nums; min-width: 64px; text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="viewport">
+
+    <!-- Nguồn nội dung: slides-content.md -->
+
+    <!-- 1. Title -->
+    <section class="slide active" style="justify-content: space-between;">
+      <div>
+        <span class="badge">Template · Cursor / Codex / Gemini / Claude</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: clamp(20px, 3vh, 40px);">
+        <h1>Agent Team Template</h1>
+        <p class="lead lead-long">Harness điều phối AI Agent theo vai trò, tích hợp tài liệu, quy trình và quy tắc phối hợp được chuẩn hóa trong một cấu trúc thống nhất.</p>
+      </div>
+      <p class="caption">Giới thiệu cấu trúc và cách dùng</p>
+    </section>
+
+    <!-- 2. Problem -->
+    <section class="slide" style="gap: clamp(24px, 4vh, 52px); justify-content: center;">
+      <h2>Lập trình với AI dễ rối khi thiếu harness</h2>
+      <ul>
+        <li>Nhiều agent / nhiều chat → phạm vi (scope) bị lệch</li>
+        <li>Docs và code không cùng một nguồn chuẩn</li>
+        <li>Review / QA bị bỏ qua vì “làm cho xong”</li>
+        <li>Kế hoạch dài hạn lẫn với bàn giao tạm thời (handoff)</li>
+      </ul>
+    </section>
+
+    <!-- 3. What it solves -->
+    <section class="slide" style="gap: clamp(24px, 4vh, 52px); justify-content: center;">
+      <h2>Một harness cố định cho mọi repo</h2>
+      <ul>
+        <li>Vai trò rõ: tech-lead → dev → review → QA</li>
+        <li>Docs phân tầng: plan / memory / runtime / KB</li>
+        <li>Skill dùng lại: <code>pre-propose-commit</code>, <code>close-phase</code>, <code>design-system</code></li>
+        <li>Áp dụng một lần bằng <code>apply-template.sh</code></li>
+      </ul>
+    </section>
+
+    <!-- 4. Who / tools -->
+    <section class="slide" style="gap: clamp(24px, 3.5vh, 44px); justify-content: center;">
+      <h2>Ai dùng? và Chạy trên đâu?</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Ai dùng</h3>
+          <ul>
+            <li>Leader / tech-lead chốt phạm vi</li>
+            <li>Dev triển khai theo hợp đồng (contract) đã chốt</li>
+            <li>Reviewer + QA giữ cổng chất lượng</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Chạy trên</h3>
+          <ul>
+            <li>Cursor (rules + @agents)</li>
+            <li>Codex CLI / Gemini CLI / Claude Code</li>
+            <li class="nowrap-prefer">Sử dụng AGENTS.md làm nguồn quy trình</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Pipeline -->
+    <section class="slide" style="gap: clamp(24px, 4vh, 52px); justify-content: center;">
+      <h2>Thứ tự không được đảo</h2>
+      <ul class="steps">
+        <li><span class="step-num">1</span> tech-lead — chốt Scope (phạm vi), kế hoạch, tiêu chí chấp nhận</li>
+        <li><span class="step-num">2</span> backend-dev / frontend-dev — triển khai</li>
+        <li><span class="step-num">3</span> code-reviewer — mục nghiêm trọng (Critical) phải sửa</li>
+        <li><span class="step-num">4</span> qa-engineer — kiểm tra sẵn sàng release (phát hành)</li>
+        <li><span class="step-num">5</span> User xác nhận xong → mới commit/push</li>
+      </ul>
+    </section>
+
+    <!-- 6. Hierarchy -->
+    <section class="slide" style="gap: clamp(24px, 4vh, 52px); justify-content: center;">
+      <h2>Cấu trúc phân rõ công việc</h2>
+      <ul>
+        <li><strong>Phase</strong> = nhóm công việc theo giai đoạn / release</li>
+        <li><strong>Epic</strong> = mục tiêu lớn, được chia thành nhiều Task</li>
+        <li><strong>Task</strong> = đơn vị thực thi nhỏ nhất</li>
+        <li>Task nhỏ có thể đứng độc lập — không bắt buộc thuộc Epic</li>
+      </ul>
+    </section>
+
+    <!-- 7. Plan = HOW -->
+    <section class="slide" style="gap: clamp(24px, 3.5vh, 44px); justify-content: center;">
+      <h2>Plan không phải một cấp hierarchy (phân cấp)</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Cái gì (WHAT)</h3>
+          <ul>
+            <li>Epic = mục tiêu lớn</li>
+            <li>Task = việc đang làm</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Cách làm (HOW)</h3>
+          <ul>
+            <li>Epic Plan → <code>docs/plan/EPIC-*.md</code></li>
+            <li>Current Task Plan → <code>docs/runtime/current-task-plan.md</code></li>
+            <li>Viết lại khi đổi Task — không nối thêm lịch sử</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Doc layers -->
+    <section class="slide" style="gap: clamp(20px, 3vh, 40px); justify-content: center;">
+      <h2>Mỗi thư mục một việc</h2>
+      <ul style="font-size: clamp(24px, 2.1vw, 36px); gap: clamp(12px, 1.8vh, 22px);">
+        <li><code>docs/plan/</code> — kế hoạch Epic chính thức (<code>EPIC-*</code>) + ghi chú nháp (<code>draft-*</code>)</li>
+        <li><code>docs/runtime/</code> — bàn giao tạm thời cho đúng một Task đang chạy</li>
+        <li><code>docs/memory/</code> — quyết định đã được team chấp nhận (nhớ dự án)</li>
+        <li><code>docs/kb/</code> — Knowledge Base: chuẩn / kiến thức kỹ thuật dài hạn</li>
+        <li class="nowrap-prefer">PROJECT-STATUS.md — trạng thái tổng: ACTIVE (đang làm) / DONE (đã xong) / MAINTAIN (bảo trì)</li>
+      </ul>
+    </section>
+
+    <!-- 9. Source of truth -->
+    <section class="slide" style="gap: clamp(24px, 4vh, 52px); justify-content: center;">
+      <h2>Mỗi thông tin — một nguồn chuẩn duy nhất</h2>
+      <ul>
+        <li>Trạng thái dự án &amp; Phase → <code>PROJECT-STATUS.md</code></li>
+        <li>Kế hoạch Epic → <code>docs/plan/EPIC-*.md</code></li>
+        <li>Task đang thực hiện → <code>current-task-plan.md</code></li>
+        <li>Runtime chỉ giữ trạng thái hiện tại — không lưu lịch sử kế hoạch</li>
+      </ul>
+    </section>
+
+    <!-- 10. Skills -->
+    <section class="slide" style="gap: clamp(24px, 4vh, 52px); justify-content: center;">
+      <h2>Skills bổ sung, không phải agent mới</h2>
+      <ul>
+        <li><code>team-workflow</code> / <code>close-phase</code> / <code>pre-propose-commit</code></li>
+        <li><code>design-system</code> — CREATE / EXTEND / REDESIGN</li>
+        <li>Taste + <code>frontend-design-qa</code> + Browser QA</li>
+        <li><code>api-security</code> · <code>slidewright</code></li>
+        <li>Gắn vào frontend-dev / qa-engineer — không tạo thêm vai trò mới</li>
+      </ul>
+    </section>
+
+    <!-- 11. Planning depth -->
+    <section class="slide" style="gap: clamp(24px, 4vh, 52px); justify-content: center;">
+      <h2>Lập kế hoạch theo độ phức tạp</h2>
+      <ul>
+        <li><strong>Trivial</strong> → làm thẳng, không cần Epic / không cần runtime plan</li>
+        <li><strong>Task</strong> → chỉ <code>current-task-plan.md</code></li>
+        <li><strong>Epic</strong> → <code>EPIC-*.md</code> + mở đúng một Task đang chạy</li>
+        <li><strong>Phase mới</strong> → cập nhật PROJECT-STATUS rồi mới chia Epic/Task</li>
+      </ul>
+    </section>
+
+    <!-- 12. Start project -->
+    <section class="slide" style="gap: clamp(24px, 4vh, 52px); justify-content: center;">
+      <h2>4 bước sau khi apply</h2>
+      <ul class="steps">
+        <li><span class="step-num">1</span> Chạy <code>./apply-template.sh /path/to/project</code></li>
+        <li><span class="step-num">2</span> Điền PROJECT-STATUS + memory / KB</li>
+        <li><span class="step-num">3</span> (Tuỳ chọn) ghi <code>draft-*</code> hoặc <code>EPIC-*</code></li>
+        <li><span class="step-num">4</span> Tech-lead viết lại current-task-plan → gọi dev</li>
+      </ul>
+      <p class="caption">Hướng dẫn: docs/guides/start-new-project.md</p>
+    </section>
+
+    <!-- 13. Git & DoD -->
+    <section class="slide" style="gap: clamp(24px, 4vh, 52px); justify-content: center;">
+      <h2>Commit chỉ khi được xác nhận</h2>
+      <ul>
+        <li>Chỉ commit/push khi user nói rõ (vd. “ok commit và push”)</li>
+        <li>Trước khi đề xuất: skill <code>pre-propose-commit</code></li>
+        <li>Chỉ coi là hoàn thành khi: Tech Lead chấp nhận phạm vi + không còn lỗi nghiêm trọng + QA đạt + User xác nhận</li>
+      </ul>
+    </section>
+
+    <!-- 14. Close -->
+    <section class="slide" style="justify-content: space-between;">
+      <div>
+        <span class="badge">Kết</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: clamp(20px, 3vh, 40px);">
+        <h1 style="font-size: clamp(40px, 4.8vw, 76px);">Một Harness — Nhiều Agent — Vận hành như một Team</h1>
+        <p class="lead" style="max-width: min(26em, 100%);">Đọc AGENTS.md → nắm cấu trúc dự án → bắt đầu Phase đầu tiên</p>
+      </div>
+      <p class="caption">Repo agent-team-template private created by leehaira in GitHub</p>
+    </section>
+
+  </div>
+
+  <nav id="nav">
+    <button id="prev" aria-label="Slide trước">&larr; Trước</button>
+    <div id="dots"></div>
+    <span id="counter"></span>
+    <button id="next" aria-label="Slide sau">Sau &rarr;</button>
+  </nav>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const dotsBox = document.getElementById('dots');
+    const counter = document.getElementById('counter');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    let current = slides.findIndex(s => s.classList.contains('active'));
+    if (current < 0) current = 0;
+
+    slides.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'dot';
+      d.setAttribute('aria-label', 'Slide ' + (i + 1));
+      d.addEventListener('click', () => go(i));
+      dotsBox.appendChild(d);
+    });
+    const dots = Array.from(dotsBox.children);
+
+    function render() {
+      slides.forEach((s, i) => s.classList.toggle('active', i === current));
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+      counter.textContent = (current + 1) + ' / ' + slides.length;
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === slides.length - 1;
+    }
+    function go(i) { current = Math.max(0, Math.min(slides.length - 1, i)); render(); }
+
+    prevBtn.addEventListener('click', () => go(current - 1));
+    nextBtn.addEventListener('click', () => go(current + 1));
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(current + 1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(current - 1); }
+      else if (e.key === 'Home') go(0);
+      else if (e.key === 'End') go(slides.length - 1);
+    });
+
+    render();
+  </script>
+</body>
+</html>
