@@ -7,9 +7,9 @@ Mục tiêu: lưu ngữ cảnh đang hiệu lực để Agent bám đúng khi tr
 ## Current decisions (active)
 
 - 2026-08-14:
-  - Decision: Deck trình chiếu xuất vào `exports/slides/` — một HTML tự chứa + một PDF 1920×1080; notes kèm folder, không chiếu.
+  - Decision: Deck trình chiếu xuất vào `exports/slides/` dưới tên `kiki-business-kit-<phiên-bản>.html|.pdf` (hiện tại `1.0`); notes kèm folder, không chiếu.
   - Why: User yêu cầu 1 HTML + 1 PDF dưới `/exports`; HTML track đủ cho ~16 slide.
-  - Impact: Nguồn nội dung vẫn là `docs/plan/draft-slides.md`; file trình chiếu không nằm trong `docs/guides/`.
+  - Impact: Nguồn nội dung vẫn là `docs/plan/draft-slides-1.0.md`; file trình chiếu không nằm trong `docs/guides/`.
 
 ## Working conventions
 

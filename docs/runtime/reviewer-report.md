@@ -6,14 +6,14 @@
 
 | Field | Value |
 |-------|--------|
-| Reviewed scope (PR / branch / files) | `exports/slides/kiki-business-kit.html`, notes, PDF; `docs/runtime/current-task-plan.md` |
+| Reviewed scope (PR / branch / files) | `exports/slides/kiki-business-kit-1.0.html`, notes, PDF; `docs/runtime/current-task-plan.md` |
 | Reviewer role | code-reviewer (Nami) |
 | Review date | 2026-08-14 |
 | Verdict | Approve with warnings |
 
 ## Summary
 
-Deck HTML 16 slide, nav dots + counter, bàn phím. Copy bám `docs/plan/draft-slides.md`. PDF 16 trang 1920×1080. Không form/input. Không critical.
+Deck HTML 16 slide, nav dots + counter, bàn phím. Copy bám `docs/plan/draft-slides-1.0.md`. PDF 16 trang 1920×1080. Không form/input. Không critical.
 
 ## Critical (must fix before merge)
 

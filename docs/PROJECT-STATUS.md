@@ -12,7 +12,7 @@
 | Current phase | Phase 1 — Deck Kiki Business Kit 1.0 |
 | Current epic | |
 | Current task | TASK-001 — Deck HTML + PDF |
-| Related epic plan | Input: `docs/plan/draft-slides.md` |
+| Related epic plan | Input: `docs/plan/draft-slides-1.0.md` |
 | Related design | Slidewright design-system (không có Figma brand) |
 | Phase status | qa |
 | Last meaningful update | 2026-08-14 |

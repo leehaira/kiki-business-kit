@@ -1,7 +1,7 @@
 # Kiki Business Kit 1.0 — speaker notes
 
 > Không chiếu. Dùng để chuẩn bị narrative, dàn bài, ghi chú nói.
-> Nguồn nội dung: `docs/plan/draft-slides.md`
+> Nguồn nội dung: `docs/plan/draft-slides-1.0.md`
 
 ## Dàn bài
 

@@ -16,7 +16,7 @@
 
 | Area | Test type | Steps / command | Expected | Status |
 |------|-----------|-----------------|----------|--------|
-| HTML load | Smoke | Mở `kiki-business-kit.html` | Title + slide 1 cover | pass |
+| HTML load | Smoke | Mở `kiki-business-kit-1.0.html` | Title + slide 1 cover | pass |
 | Nav | Keyboard / dots | 16 dots `aria-label="Slide N"`; → / ← | 1–16, prev disabled ở 1, next disabled ở 16 | pass |
 | PDF export | Script | `export-deck-pdf.py` → 16 trang | 16/16 captured | pass |
 | Overflow | Visual 1920×1080 | PNG slides 4,5,6,9,10,13,14,16 | Không clip chữ | pass |
@@ -45,6 +45,6 @@
 
 Deliverables:
 
-- `exports/slides/kiki-business-kit.html`
-- `exports/slides/kiki-business-kit.pdf`
+- `exports/slides/kiki-business-kit-1.0.html`
+- `exports/slides/kiki-business-kit-1.0.pdf`
 - `exports/slides/kiki-business-kit-notes.md` (không chiếu)

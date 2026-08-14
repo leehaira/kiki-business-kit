@@ -9,7 +9,7 @@
 | Task ID | TASK-001 |
 | Task title | Deck Kiki Business Kit 1.0 — HTML + PDF |
 | Related epic | |
-| Related epic plan | Input: `docs/plan/draft-slides.md` (raw notes, not execution source) |
+| Related epic plan | Input: `docs/plan/draft-slides-1.0.md` (raw notes, not execution source) |
 | Branch | current |
 | Owner role | tech-lead → frontend-dev |
 | Status | qa |
@@ -23,7 +23,7 @@ Dựng bài thuyết trình Kiki Business Kit 1.0 từ draft, xuất **một fil
 
 ## Context
 
-- User: `@Luffy` làm slide; xuất hết ở `/exports`; 1 HTML + 1 PDF; nguồn `docs/plan/draft-slides.md`.
+- User: `@Luffy` làm slide; xuất hết ở `/exports`; 1 HTML + 1 PDF; nguồn `docs/plan/draft-slides-1.0.md`.
 - Track: **plain HTML** (≈16 slide, không cần React).
 - Persona: Luffy = tech-lead (scope); Sanji = frontend-dev (dựng deck).
 
@@ -43,8 +43,8 @@ Dựng bài thuyết trình Kiki Business Kit 1.0 từ draft, xuất **một fil
 
 ## Acceptance criteria
 
-- [x] `exports/slides/kiki-business-kit.html` chạy được, có nav dots + số slide, bàn phím.
-- [x] `exports/slides/kiki-business-kit.pdf` đủ số trang = số slide (16).
+- [x] `exports/slides/kiki-business-kit-1.0.html` chạy được, có nav dots + số slide, bàn phím.
+- [x] `exports/slides/kiki-business-kit-1.0.pdf` đủ số trang = số slide (16).
 - [x] Chữ đạt typography floor (body ≥ 40px trên canvas 1080p).
 - [x] Không form/input; chỉ presenter click/keyboard.
 - [x] Nội dung cover → KikiCMS → domain/hosting/care → KikiMail → Nana Lab → kết.
@@ -61,8 +61,8 @@ Dựng bài thuyết trình Kiki Business Kit 1.0 từ draft, xuất **một fil
 
 ## Files / areas expected to change
 
-- `exports/slides/kiki-business-kit.html`
-- `exports/slides/kiki-business-kit.pdf`
+- `exports/slides/kiki-business-kit-1.0.html`
+- `exports/slides/kiki-business-kit-1.0.pdf`
 - `exports/slides/kiki-business-kit-notes.md`
 - `docs/runtime/*`, `docs/PROJECT-STATUS.md`, `docs/memory/*` (sync)
 
@@ -72,7 +72,7 @@ Dựng bài thuyết trình Kiki Business Kit 1.0 từ draft, xuất **một fil
 - Related design refs: `.cursor/skills/slidewright/references/design-system.md`
 - Visual/design scope:
   - Design mode: CREATE
-  - Approved design/reference: `docs/plan/draft-slides.md` (nội dung, không phải visual)
+  - Approved design/reference: `docs/plan/draft-slides-1.0.md` (nội dung, không phải visual)
   - Approval gate before implementation: not required (user đã bảo làm slide)
 - Tailwind CDN: không phụ thuộc utility cho layout cốt lõi — CSS trong `<style>`.
 - PDF export cần Playwright + network (font/CDN nếu có).
@@ -90,8 +90,8 @@ Tổ chức export:
 
 ```text
 exports/slides/
-  kiki-business-kit.html    # deck trình chiếu
-  kiki-business-kit.pdf     # handout
+  kiki-business-kit-1.0.html    # deck trình chiếu
+  kiki-business-kit-1.0.pdf     # handout
   kiki-business-kit-notes.md
 ```
 

@@ -21,3 +21,9 @@ Ghi ngắn gọn theo thời gian để truy vết quyết định kỹ thuật.
 - Reason: Trình chiếu cần nhịp phần; draft là raw notes.
 - Impact: Khi giá/copy đổi, sửa HTML rồi export lại PDF.
 - Owner: tech-lead
+
+- Date: 2026-08-14
+- Decision: File xuất đặt tên `kiki-business-kit-<phiên-bản>.html` và `.pdf` (bản hiện tại `1.0`). Bản mới không ghi đè bản cũ.
+- Reason: Cần giữ lịch sử xuất khi ra bản sau.
+- Impact: README trỏ bản hiện hành; notes không gắn version.
+- Owner: tech-lead
