@@ -129,6 +129,7 @@ Quyết định đã chốt lâu dài vẫn ghi vào `docs/memory/decisions.md` 
 - Khác **`docs/kb/`**: KB ghi **chuẩn/chính sách**; skill ghi **bước chạy** và mẫu báo cáo.
 - Khác **`docs/runtime/`**: runtime là state/handoff **của Task hiện tại**; skill là playbook cố định trong repo.
 - Agent có thể `@` chọn skill; không thay thế đọc `docs/kb/coding-standards.md` khi cần chuẩn markup/CSS.
+- **`diataxis-writer`**: khi viết hoặc tái cấu trúc tài liệu người đọc — phân loại tutorial / how-to / reference / explanation và đặt đúng `docs/guides/` hoặc `docs/kb/` (xem `.cursor/skills/diataxis-writer/README.vi.md`).
 
 Chi tiết workflow: root **`AGENTS.md`** (mục Documentation layers và Runtime handoff).
 

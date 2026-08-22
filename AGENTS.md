@@ -208,6 +208,7 @@ If creating a PR-based flow, push branch first and open PR after push.
   - `Read AGENTS.md first, then act as @agents/frontend-dev.`
   - `Read AGENTS.md and relevant standards before editing Pug/SCSS.`
   - `For project-level UI design-system work, read .cursor/skills/design-system/SKILL.md after @agents/frontend-dev.`
+  - `For docs under docs/kb/ or docs/guides/, read .cursor/skills/diataxis-writer/SKILL.md when writing or restructuring.`
   - `Follow .cursor/skills/pre-propose-commit/SKILL.md before proposing commit.`
 - For role-based work, read the matching persona in `.cursor/rules/agents/*.mdc` (see **Role Emulation**).
 - For repeatable workflows, read the matching skill in `.cursor/skills/*/SKILL.md`.
