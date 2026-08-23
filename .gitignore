@@ -31,3 +31,5 @@ phpunit.phar
 AGENT.md
 CLAUDE.md 
 GEMINI.md
+# local slide PDF export venv
+.venv-slide-export/

@@ -1,0 +1,1318 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kiki Business Kit 1.1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --accent: #c45c26;
+      --accent-soft: rgba(196, 92, 38, .12);
+      --ink: #141a22;
+      --bg: #f3eee4;
+      --soft: #5c6570;
+      --card: #fffaf3;
+      --line: rgba(20, 26, 34, .08);
+      --dark: #141a22;
+      --cream: #f3eee4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); }
+    body {
+      font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(90% 70% at 110% -10%, rgba(196, 92, 38, .10), transparent 52%),
+        radial-gradient(70% 60% at -15% 110%, rgba(20, 26, 34, .06), transparent 48%),
+        var(--bg);
+    }
+
+    #viewport { position: fixed; inset: 0 0 64px 0; overflow: hidden; }
+    .slide {
+      position: absolute; inset: 0;
+      padding: clamp(36px, 5vh, 88px) clamp(44px, 5.8vw, 128px);
+      display: none; flex-direction: column;
+      opacity: 0; transition: opacity .35s ease;
+    }
+    .slide.active { display: flex; opacity: 1; }
+
+    .slide          { font-size: clamp(22px, 2vw, 34px); line-height: 1.4; }
+    .slide h1       { font-size: clamp(42px, 4.6vw, 78px); line-height: 1.08; letter-spacing: -.03em; font-weight: 800; }
+    .slide h2       { font-size: clamp(28px, 2.6vw, 46px); line-height: 1.15; font-weight: 800; letter-spacing: -.02em; }
+    .slide h3       { font-size: clamp(22px, 1.9vw, 32px); line-height: 1.2; font-weight: 700; }
+    .slide .lead    { font-size: clamp(22px, 2.1vw, 36px); color: var(--soft); }
+    .slide .caption { font-size: clamp(18px, 1.55vw, 28px); color: var(--soft); }
+    .slide ul       { list-style: none; display: flex; flex-direction: column; gap: clamp(12px, 1.8vh, 22px); }
+    .slide li       { display: flex; gap: .5em; align-items: flex-start; }
+    .slide li::before {
+      content: ''; flex: none; width: .38em; height: .38em; margin-top: .48em;
+      border-radius: .1em; background: var(--accent);
+    }
+
+    .slide.dark {
+      color: var(--cream);
+      background:
+        radial-gradient(80% 70% at 100% 0%, rgba(196, 92, 38, .28), transparent 50%),
+        radial-gradient(60% 50% at 0% 100%, rgba(255, 250, 243, .06), transparent 46%),
+        var(--dark);
+    }
+    .slide.dark .lead,
+    .slide.dark .caption { color: rgba(243, 238, 228, .72); }
+    .slide.dark .badge {
+      background: rgba(196, 92, 38, .22);
+      color: #f3c4a8;
+    }
+
+    .badge {
+      display: inline-flex; align-items: center;
+      background: var(--accent-soft); color: var(--accent);
+      font-weight: 700; padding: .4em .8em; border-radius: 999px;
+      font-size: clamp(16px, 1.35vw, 26px);
+    }
+    .kicker {
+      font-size: clamp(16px, 1.35vw, 24px);
+      font-weight: 700; letter-spacing: .04em;
+      color: var(--accent);
+    }
+    .slide.dark .kicker { color: #e08a58; }
+
+    .grid-2 {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(16px, 2.2vw, 32px); width: 100%;
+    }
+    .grid-3 {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: clamp(14px, 1.8vw, 28px); width: 100%;
+    }
+    .grid-4 {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(14px, 1.8vw, 28px); width: 100%;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: clamp(16px, 1.6vw, 28px);
+      padding: clamp(18px, 2.2vh, 32px);
+      display: flex; flex-direction: column; gap: clamp(8px, 1.2vh, 16px);
+      min-width: 0;
+    }
+    .card h3 { color: var(--ink); }
+    .card .meta { font-size: clamp(20px, 1.55vw, 30px); color: var(--accent); font-weight: 700; }
+    .ico {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(40px, 3.4vw, 56px);
+      height: clamp(40px, 3.4vw, 56px);
+      border-radius: 14px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      flex: none;
+    }
+    .ico svg {
+      width: 54%;
+      height: 54%;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .ico-sm {
+      width: clamp(28px, 2.2vw, 36px);
+      height: clamp(28px, 2.2vw, 36px);
+      border-radius: 10px;
+    }
+    .card-head {
+      display: flex;
+      align-items: center;
+      gap: clamp(10px, 1vw, 14px);
+    }
+    .card-head h3 { margin: 0; }
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: .45em;
+    }
+    .slide.dark .ico {
+      background: rgba(196, 92, 38, .22);
+      color: #f3c4a8;
+    }
+    .need-group .group-label {
+      display: inline-flex;
+      align-items: center;
+      gap: .45em;
+    }
+    .group-label {
+      display: inline-flex;
+      align-items: center;
+      gap: .45em;
+    }
+    .card p, .card li {
+      font-size: clamp(20px, 1.65vw, 32px);
+      line-height: 1.32;
+      overflow-wrap: break-word;
+    }
+    .card ul { gap: clamp(6px, 1vh, 12px); }
+    .card li::before { margin-top: .42em; }
+
+    .steps { gap: clamp(10px, 1.5vh, 18px); }
+    .steps li::before { display: none; }
+    .steps li { align-items: flex-start; gap: clamp(14px, 1.6vw, 24px); }
+    .step-num {
+      flex: none; font-weight: 800; color: var(--accent);
+      font-size: clamp(22px, 2vw, 32px); min-width: 1.6em;
+      letter-spacing: -.02em;
+    }
+    .step-body { min-width: 0; }
+    .step-body strong { display: block; font-weight: 700; }
+    .step-body span {
+      display: block; color: var(--soft);
+      font-size: clamp(20px, 1.65vw, 32px);
+      margin-top: .15em;
+    }
+
+    .flow {
+      display: flex; align-items: center; gap: clamp(8px, 1vw, 16px);
+      flex-wrap: wrap;
+    }
+    .flow span {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 999px; padding: .35em .8em; font-weight: 700;
+      font-size: clamp(20px, 1.65vw, 32px);
+    }
+    .flow i { color: var(--accent); font-style: normal; font-weight: 800; }
+
+    .need-group {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(8px, 1.2vh, 14px);
+      width: 100%;
+    }
+    .need-group .group-label {
+      font-size: clamp(16px, 1.35vw, 26px);
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: .02em;
+    }
+    .need-group .flow {
+      margin: 0;
+    }
+
+    .compare {
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      gap: clamp(16px, 2vw, 32px); align-items: center; width: 100%;
+    }
+    .mail {
+      font-family: ui-monospace, 'Be Vietnam Pro', monospace;
+      font-weight: 700; font-size: clamp(22px, 2vw, 34px);
+    }
+    .mail.bad { color: var(--soft); text-decoration: line-through; text-decoration-thickness: 2px; }
+    .mail.good { color: var(--accent); }
+
+    table.dense {
+      width: 100%; border-collapse: collapse;
+      font-size: clamp(20px, 1.65vw, 32px);
+    }
+    table.dense th, table.dense td {
+      text-align: left; padding: .42em .5em;
+      border-bottom: 1px solid var(--line);
+    }
+    table.dense th { color: var(--soft); font-weight: 600; font-size: .86em; }
+    table.dense td { font-weight: 500; }
+    table.dense tr.featured td {
+      background: var(--accent-soft);
+      font-weight: 700;
+    }
+    table.dense .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+    .price-hero {
+      font-size: clamp(32px, 3.4vw, 58px);
+      font-weight: 800; letter-spacing: -.03em; color: var(--accent);
+    }
+
+    .plus {
+      display: flex; align-items: center; justify-content: center;
+      font-size: clamp(28px, 2.8vw, 44px); font-weight: 800; color: var(--accent);
+    }
+
+    .shot-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(12px, 1.6vw, 24px);
+      width: 100%; flex: 1; min-height: 32vh;
+    }
+    .shot-row img {
+      display: block; width: 100%; height: 100%; min-height: 32vh;
+      object-fit: cover; object-position: top left;
+      border-radius: clamp(12px, 1.2vw, 20px);
+      border: 1px solid var(--line); background: var(--card);
+    }
+
+    .process-split {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: clamp(18px, 2.4vw, 36px);
+      align-items: stretch;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+    }
+    .process-split .steps {
+      justify-content: center;
+      min-width: 0;
+    }
+    .device-shots {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(8px, 1.2vh, 14px);
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    .device-shots img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      border-radius: clamp(12px, 1.2vw, 20px);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 28px rgba(20, 26, 34, .08);
+      background: transparent;
+    }
+    .device-shots img.pc {
+      max-height: 56%;
+    }
+    .device-shots img.mobile {
+      max-height: 38%;
+      max-width: 46%;
+    }
+
+    .miniapp-split {
+      display: grid;
+      grid-template-columns: 1.35fr 0.85fr;
+      gap: clamp(14px, 1.8vw, 28px);
+      align-items: stretch;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+    }
+    .miniapp-split .packages {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(12px, 1.4vw, 20px);
+      min-height: 0;
+    }
+    .miniapp-split .card {
+      padding: clamp(12px, 1.6vh, 20px);
+      gap: clamp(6px, 0.9vh, 10px);
+    }
+    .miniapp-split .card p,
+    .miniapp-split .card li {
+      font-size: clamp(16px, 1.35vw, 26px);
+      line-height: 1.28;
+    }
+    .miniapp-split .card h3 {
+      font-size: clamp(18px, 1.55vw, 28px);
+    }
+    .miniapp-split .card .meta {
+      font-size: clamp(16px, 1.35vw, 24px);
+    }
+    .miniapp-split .card ul {
+      gap: clamp(4px, 0.7vh, 8px);
+      flex: 1;
+    }
+    .card .price {
+      margin-top: auto;
+      padding-top: .35em;
+      border-top: 1px solid var(--line);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: clamp(18px, 1.5vw, 28px);
+    }
+    .card .price span {
+      color: var(--soft);
+      font-weight: 500;
+      font-size: 0.78em;
+    }
+    .miniapp-split .card .price {
+      font-size: clamp(16px, 1.35vw, 26px);
+    }
+    .webapp-split {
+      display: grid;
+      grid-template-columns: 1.55fr 0.7fr;
+      gap: clamp(12px, 1.5vw, 24px);
+      align-items: stretch;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+    }
+    .webapp-split .webapp-packages {
+      flex: none;
+      min-height: 0;
+      height: 100%;
+    }
+    .webapp-split .miniapp-shot {
+      align-self: stretch;
+    }
+    .webapp-packages {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: clamp(10px, 1.2vw, 18px);
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+    }
+    .webapp-packages .card {
+      padding: clamp(10px, 1.4vh, 18px);
+      gap: clamp(5px, 0.8vh, 10px);
+    }
+    .webapp-packages .card .meta {
+      font-size: clamp(15px, 1.25vw, 22px);
+    }
+    .webapp-packages .card ul {
+      gap: clamp(3px, 0.5vh, 7px);
+      flex: 1;
+    }
+    .webapp-packages .card li {
+      font-size: clamp(13px, 1.1vw, 20px);
+      line-height: 1.28;
+    }
+    .webapp-packages .card .price {
+      font-size: clamp(15px, 1.25vw, 22px);
+    }
+    .miniapp-shot {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    .miniapp-shot img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: clamp(12px, 1.2vw, 20px);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 28px rgba(20, 26, 34, .08);
+      background: transparent;
+    }
+
+    .tgbot-split {
+      display: grid;
+      grid-template-columns: 1.45fr 0.9fr;
+      gap: clamp(12px, 1.6vw, 24px);
+      align-items: start;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+    }
+    .tgbot-split .miniapp-shot {
+      align-items: flex-start;
+      height: auto;
+      align-self: start;
+    }
+    .tgbot-body {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(6px, 1vh, 12px);
+      min-height: 0;
+      min-width: 0;
+    }
+    .tgbot-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(8px, 1vw, 14px);
+      flex: 1;
+      min-height: 0;
+    }
+    .tgbot-features .card {
+      padding: clamp(10px, 1.3vh, 16px);
+      gap: clamp(4px, 0.6vh, 8px);
+    }
+    .tgbot-features .card h3 {
+      font-size: clamp(16px, 1.35vw, 24px);
+    }
+    .tgbot-features .card li {
+      font-size: clamp(14px, 1.2vw, 22px);
+      line-height: 1.25;
+    }
+    .tgbot-features .card ul {
+      gap: clamp(3px, 0.5vh, 6px);
+    }
+    .tgbot-body .meta {
+      font-size: clamp(16px, 1.35vw, 24px);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .tgbot-extend {
+      font-size: clamp(14px, 1.2vw, 22px);
+      line-height: 1.3;
+      color: var(--ink);
+    }
+    .tgbot-extend strong {
+      color: var(--accent);
+    }
+    .tgbot-body .price {
+      margin-top: auto;
+      padding-top: .35em;
+      border-top: 1px solid var(--line);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: clamp(16px, 1.4vw, 26px);
+    }
+    .tgbot-body .price span {
+      display: block;
+      margin-top: .2em;
+      color: var(--soft);
+      font-weight: 500;
+      font-size: 0.9em;
+    }
+
+    .zalobot-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: clamp(8px, 1vw, 12px);
+      flex: 1;
+      min-height: 0;
+    }
+    .zalobot-features .card {
+      padding: clamp(8px, 1.1vh, 14px);
+      gap: clamp(3px, 0.5vh, 6px);
+    }
+    .zalobot-features .card:nth-child(4),
+    .zalobot-features .card:nth-child(5) {
+      grid-column: span 1;
+    }
+    .zalobot-features .card h3 {
+      font-size: clamp(15px, 1.25vw, 22px);
+    }
+    .zalobot-features .card li {
+      font-size: clamp(13px, 1.1vw, 20px);
+      line-height: 1.25;
+    }
+    .zalobot-features .card ul {
+      gap: clamp(2px, 0.4vh, 5px);
+    }
+    .zalobot-note {
+      font-size: clamp(13px, 1.1vw, 20px);
+      line-height: 1.3;
+      color: var(--soft);
+    }
+
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(10px, 1.2vw, 18px);
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      align-content: stretch;
+      padding-top: clamp(10px, 1.4vh, 18px);
+    }
+    .plan-card {
+      position: relative;
+      background: #fff;
+      border: 1px solid #e6e8ee;
+      border-radius: clamp(12px, 1.2vw, 18px);
+      padding: clamp(14px, 1.8vh, 22px) clamp(14px, 1.4vw, 22px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(6px, 0.9vh, 12px);
+      min-width: 0;
+    }
+    .plan-card.featured {
+      background: #fff5f5;
+      border: 2px solid #c82323;
+    }
+    .plan-badge {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #c82323;
+      color: #fff;
+      font-weight: 700;
+      font-size: clamp(12px, 1vw, 18px);
+      padding: .28em .85em;
+      border-radius: 999px;
+      white-space: nowrap;
+      line-height: 1.2;
+    }
+    .plan-name {
+      font-size: clamp(16px, 1.35vw, 24px);
+      font-weight: 700;
+      color: #3a4454;
+      letter-spacing: .02em;
+    }
+    .plan-price {
+      font-size: clamp(26px, 2.4vw, 40px);
+      font-weight: 800;
+      color: #2b59c3;
+      letter-spacing: -.02em;
+      line-height: 1.1;
+    }
+    .plan-price small {
+      font-size: 0.48em;
+      font-weight: 500;
+      color: #2b59c3;
+      margin-left: .1em;
+    }
+    .plan-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(4px, 0.7vh, 8px);
+      margin-top: .15em;
+    }
+    .plan-card li {
+      display: flex;
+      gap: .45em;
+      align-items: flex-start;
+      font-size: clamp(13px, 1.15vw, 20px);
+      line-height: 1.3;
+      color: #3a4454;
+    }
+    .plan-card li::before {
+      content: '';
+      flex: none;
+      width: .32em;
+      height: .32em;
+      margin-top: .42em;
+      border-radius: 50%;
+      background: #c82323;
+    }
+
+    .foot {
+      margin-top: auto;
+      font-size: clamp(18px, 1.55vw, 28px);
+      color: var(--soft);
+    }
+    .slide.dark .foot { color: rgba(243, 238, 228, .72); }
+
+    #nav {
+      position: fixed; left: 0; right: 0; bottom: 0; height: 64px; z-index: 50;
+      display: flex; align-items: center; justify-content: center; gap: 20px;
+      background: rgba(255, 250, 243, .9); backdrop-filter: blur(10px);
+      border-top: 1px solid var(--line);
+    }
+    #nav button {
+      cursor: pointer; border: none; background: none; color: var(--ink);
+      padding: 8px 12px; font-size: 18px; border-radius: 10px;
+      font-family: inherit;
+    }
+    #nav button:disabled { opacity: .25; cursor: default; }
+    #dots { display: flex; gap: 8px; align-items: center; max-width: 60vw; overflow-x: auto; }
+    .dot {
+      width: 10px; height: 10px; border-radius: 999px; background: #d5c8b4;
+      border: none; cursor: pointer; transition: all .2s; flex: none;
+    }
+    .dot.active { width: 26px; background: var(--accent); }
+    #counter {
+      font-size: 18px; color: var(--soft);
+      font-variant-numeric: tabular-nums; min-width: 64px; text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="viewport">
+
+    <!-- 1. Cover -->
+    <section class="slide dark active" style="justify-content: space-between;">
+      <div>
+        <span class="badge">Phiên bản 1.1</span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap: clamp(16px, 2.4vh, 28px);">
+        <p class="kicker">KikiCMS · KikiMail</p>
+        <h1>Kiki Business Kit</h1>
+        <p class="lead" style="max-width: 22em;">Bộ giải pháp chuyển đổi số dành cho doanh nghiệp</p>
+      </div>
+      <p class="caption">Từ KikiCMS đến KikiMail — một bộ giải pháp gọn để bắt đầu và phát triển hiện diện số.</p>
+    </section>
+
+    <!-- 2. Why kit -->
+    <section class="slide" style="gap: clamp(16px, 2.4vh, 32px); justify-content: center;">
+      <span class="badge">Mở đầu</span>
+      <h2>Doanh nghiệp không chỉ cần một website</h2>
+      <p class="lead" style="max-width: 28em;">Hiện diện chuyên nghiệp trên Internet thường phải làm việc với nhiều đơn vị khác nhau.</p>
+      <div class="need-group">
+        <p class="group-label"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/><path d="M8 14h4"/></svg></span>KikiCMS</p>
+        <div class="flow" aria-hidden="true">
+          <span>Website</span><i>·</i>
+          <span>Tên miền</span><i>·</i>
+          <span>Hosting</span><i>·</i>
+          <span>Bảo trì</span>
+        </div>
+        <div class="flow" aria-hidden="true">
+          <span>Mini App Zalo</span><i>·</i>
+          <span>Web App</span><i>·</i>
+          <span>Telegram Shop Bot</span><i>·</i>
+          <span>Zalo Bot</span>
+        </div>
+      </div>
+      <div class="need-group">
+        <p class="group-label"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>KikiMail</p>
+        <div class="flow" aria-hidden="true">
+          <span>Email doanh nghiệp</span>
+        </div>
+      </div>
+      <p class="foot">Kiki Business Kit gộp những nhu cầu đó thành một bộ giải pháp — dễ triển khai, dễ vận hành, dễ mở rộng.</p>
+    </section>
+
+    <!-- 3. Section KikiCMS -->
+    <section class="slide dark" style="justify-content: space-between;">
+      <p class="kicker">Phần 01</p>
+      <div>
+        <h1>KikiCMS</h1>
+        <p class="lead" style="margin-top: .4em; max-width: 28em;">Từ website doanh nghiệp đến Web App, Mini App và Bot trên kênh khách hàng</p>
+      </div>
+      <p class="caption">Website doanh nghiệp → Web App → Zalo Mini App → Telegram Bot → Zalo Bot</p>
+    </section>
+
+    <!-- 4. KikiCMS types -->
+    <section class="slide" style="gap: clamp(16px, 2.4vh, 28px);">
+      <span class="badge">KikiCMS</span>
+      <h2>Từ ý tưởng đến website hoàn chỉnh</h2>
+      <p class="caption" style="margin-top: -.4em;">Tư vấn, thiết kế, xây dựng và vận hành — phù hợp với:</p>
+      <div class="grid-4" style="flex: 1;">
+        <div class="card">
+          <div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></span><h3>Landing Page</h3></div>
+          <p>Giới thiệu 1 chiến dịch, sản phẩm hoặc dịch vụ.</p>
+          <p class="price">Giá từ 3 triệu<span> (Đã bao gồm cả thiết kế)</span></p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16"/><path d="M14 9h5a1 1 0 0 1 1 1v11"/><path d="M8 8h2"/><path d="M8 12h2"/><path d="M8 16h2"/></svg></span><h3>Corporate Website</h3></div>
+          <p>Website giới thiệu doanh nghiệp và thương hiệu.</p>
+          <p class="price">Giá từ 5 triệu<span> (Đã bao gồm cả thiết kế)</span></p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5L12 3z"/><path d="M19 15l.7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7L19 15z"/></svg></span><h3>Brand Website</h3></div>
+          <p>Xây dựng hình ảnh và hiện diện thương hiệu trực tuyến qua website.</p>
+          <p class="price">Giá từ 8 triệu<span> (Đã bao gồm cả thiết kế)</span></p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/><path d="M3 4h2l2.2 11h9.6l2-8H7"/></svg></span><h3>Sales Website</h3></div>
+          <p>Website bán hàng với chức năng thương mại cơ bản.</p>
+          <p class="price">Giá từ 10 triệu<span> (Đã bao gồm cả thiết kế)</span></p>
+        </div>
+      </div>
+      <p class="foot">Không chỉ bàn giao website. KikiCMS đồng hành từ bài toán đến vận hành.</p>
+    </section>
+
+    <!-- 5. Process -->
+    <section class="slide" style="gap: clamp(10px, 1.5vh, 18px);">
+      <span class="badge">Quy trình</span>
+      <h2>Từ ý tưởng đến sản phẩm</h2>
+      <div class="process-split">
+        <ul class="steps">
+          <li>
+            <span class="step-num">01</span>
+            <div class="step-body"><strong>Phân tích</strong><span>Nhu cầu, chức năng, nội dung và cấu trúc menu.</span></div>
+          </li>
+          <li>
+            <span class="step-num">02</span>
+            <div class="step-body"><strong>Thiết kế</strong><span>Giao diện trên Figma, bám nhận diện và trải nghiệm.</span></div>
+          </li>
+          <li>
+            <span class="step-num">03</span>
+            <div class="step-body"><strong>Phát triển</strong><span>Xây trên bộ code KikiCMS với chức năng nền tảng.</span></div>
+          </li>
+          <li>
+            <span class="step-num">04</span>
+            <div class="step-body"><strong>Mở rộng</strong><span>Thêm chức năng riêng theo bài toán thực tế.</span></div>
+          </li>
+          <li>
+            <span class="step-num">05</span>
+            <div class="step-body"><strong>Vận hành</strong><span>Hosting, bảo trì và xử lý vấn đề phát sinh.</span></div>
+          </li>
+        </ul>
+        <div class="device-shots">
+          <img class="pc" src="assets/web-pc.png" alt="Website trên máy tính" />
+          <img class="mobile" src="assets/web-mobile.png" alt="Website trên điện thoại" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Three architectures -->
+    <section class="slide" style="gap: clamp(12px, 1.8vh, 22px);">
+      <span class="badge">Công nghệ</span>
+      <h2>Ba lựa chọn kiến trúc</h2>
+      <p class="caption" style="margin-top: -.3em;">Không phải doanh nghiệp nào cũng cần cùng một kiến trúc.</p>
+      <div class="grid-3" style="flex: 1;">
+        <div class="card">
+          <p class="meta meta-row"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l9 5-9 5-9-5 9-5z"/><path d="M3 12l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg></span>01</p>
+          <h3>KikiCMS Standard</h3>
+          <p>WordPress + lớp bảo mật bổ sung. Phù hợp phần lớn website doanh nghiệp.</p>
+          <ul>
+            <li>Quản trị nội dung thuận tiện</li>
+            <li>Dễ mở rộng, chi phí hợp lý</li>
+            <li>Dễ bàn giao và vận hành</li>
+          </ul>
+        </div>
+        <div class="card">
+          <p class="meta meta-row"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></span>02</p>
+          <h3>KikiCMS Pro</h3>
+          <p>Kiến trúc Headless: WordPress quản trị nội dung. Nuxt / Next / Vinext làm giao diện.</p>
+          <ul>
+            <li>Trải nghiệm truy cập nhanh</li>
+            <li>Tách quản trị và giao diện</li>
+            <li>Linh hoạt khi phát triển frontend</li>
+          </ul>
+        </div>
+        <div class="card">
+          <p class="meta meta-row"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>03</p>
+          <h3>KikiCMS Advanced</h3>
+          <p>Microservice tách module (Cloudflare + framework JS).</p>
+          <ul>
+            <li>Linh hoạt hoàn toàn khi phát triển</li>
+            <li>Hiệu năng và khả năng mở rộng cao</li>
+            <li>Phù hợp bài toán yêu cầu cao</li>
+          </ul>
+        </div>
+      </div>
+      <p class="foot">Tư vấn theo nhu cầu thực tế — không ép một công nghệ cho mọi bài toán.</p>
+    </section>
+
+    <!-- 7. Cost -->
+    <section class="slide" style="gap: clamp(16px, 2.4vh, 28px);">
+      <span class="badge">Chi phí</span>
+      <h2>Mỗi website là một bài toán khác nhau</h2>
+      <p class="lead" style="font-size: clamp(20px, 1.85vw, 32px); max-width: 28em;">Không có mức giá cố định cho mọi dự án. Báo giá theo phạm vi triển khai thực tế.</p>
+      <div class="grid-4">
+        <div class="card"><div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 3H9"/><path d="M21 3v12"/><path d="M9 3l12 12"/><rect x="3" y="9" width="10" height="12" rx="1"/></svg></span><h3>Quy mô</h3></div><p>Số trang và cấu trúc nội dung.</p></div>
+        <div class="card"><div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="8" r="1.2" fill="currentColor" stroke="none"/><circle cx="8.5" cy="12.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="12.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"/></svg></span><h3>Thiết kế UI/UX</h3></div><p>Mức độ thiết kế và tùy biến giao diện.</p></div>
+        <div class="card"><div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 4a2 2 0 1 1 4 0v2h3a1 1 0 0 1 1 1v3h2a2 2 0 1 1 0 4h-2v3a1 1 0 0 1-1 1h-3v2a2 2 0 1 1-4 0v-2H7a1 1 0 0 1-1-1v-3H4a2 2 0 1 1 0-4h2V7a1 1 0 0 1 1-1h3V4z"/></svg></span><h3>Chức năng</h3></div><p>Tiêu chuẩn và chức năng phát triển riêng.</p></div>
+        <div class="card"><div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 2v3"/><path d="M15 2v3"/><path d="M9 19v3"/><path d="M15 19v3"/><path d="M2 9h3"/><path d="M2 15h3"/><path d="M19 9h3"/><path d="M19 15h3"/></svg></span><h3>Công nghệ</h3></div><p>Standard, Pro hoặc Advanced.</p></div>
+      </div>
+      <p class="foot">Cộng thêm yêu cầu tích hợp: API, hệ thống ngoài, đặc thù. Bạn đưa bài toán — KikiCMS đề xuất giải pháp và báo giá.</p>
+    </section>
+
+    <!-- 8. Domain -->
+    <section class="slide" style="gap: clamp(20px, 3vh, 36px); justify-content: center;">
+      <span class="badge">Tên miền</span>
+      <h2 class="card-head" style="gap: clamp(12px, 1.2vw, 18px);"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></svg></span>Chưa có tên miền? Hỗ trợ từ đầu</h2>
+      <p class="lead" style="max-width: 24em;">Tên miền là địa chỉ của thương hiệu trên Internet.</p>
+      <div class="flow">
+        <span>Tư vấn</span><i>→</i>
+        <span>Tìm kiếm</span><i>→</i>
+        <span>Lựa chọn</span><i>→</i>
+        <span>Đăng ký</span>
+      </div>
+      <ul>
+        <li>Tư vấn tên miền phù hợp với doanh nghiệp và thương hiệu</li>
+        <li>Kiểm tra khả năng đăng ký và phần mở rộng</li>
+        <li>Thủ tục tại nhà cung cấp chính hãng, cấu hình với website</li>
+      </ul>
+      <p class="foot">Bạn tập trung thương hiệu. KikiCMS xử lý phần kỹ thuật phía sau.</p>
+    </section>
+
+    <!-- 9. Hosting -->
+    <section class="slide" style="gap: clamp(12px, 1.8vh, 22px);">
+      <span class="badge">Hosting</span>
+      <h2 class="card-head" style="gap: clamp(12px, 1.2vw, 18px);"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01"/><path d="M7 17h.01"/></svg></span>KikiCMS Close Hosting</h2>
+      <p class="caption">Không chỉ là hosting. Đây là nơi website được chăm sóc.</p>
+      <div class="grid-2" style="flex: 1; align-items: stretch;">
+        <div class="card" style="justify-content: center;">
+          <p class="meta">Năm đầu</p>
+          <p class="price-hero">Miễn phí 100%</p>
+          <p>Khi dùng cùng dịch vụ xây dựng website KikiCMS, theo điều kiện áp dụng.</p>
+        </div>
+        <div class="card">
+          <h3>Các năm tiếp theo</h3>
+          <table class="dense">
+            <thead>
+              <tr><th>Dung lượng</th><th>Chi phí</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>2 GB</td><td class="num">1.200.000đ / năm</td></tr>
+              <tr><td>3 GB</td><td class="num">1.800.000đ / năm</td></tr>
+              <tr><td>5 GB</td><td class="num">2.400.000đ / năm</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="foot">Đi kèm: băng thông không tính theo lưu lượng · bảo trì · xử lý sự cố · hỗ trợ kỹ thuật vận hành.</p>
+    </section>
+
+    <!-- 10. Zalo Mini App -->
+    <section class="slide" style="gap: clamp(10px, 1.5vh, 18px);">
+      <span class="badge">KikiCMS Package</span>
+      <h2>Dịch vụ phát triển Zalo Mini App</h2>
+      <div class="miniapp-split">
+        <div class="packages">
+          <div class="card">
+            <p class="meta meta-row"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></span>01 — Mini App Basic</p>
+            <p>Mini App gọn nhẹ, triển khai nhanh, không cần hệ thống Backend riêng.</p>
+            <ul>
+              <li>Giới thiệu doanh nghiệp, sản phẩm &amp; dịch vụ</li>
+              <li>Danh mục sản phẩm, bảng giá, tin tức, khuyến mại</li>
+              <li>Liên hệ, bản đồ, Zalo OA, hotline</li>
+              <li>Đặt hàng / đăng ký qua Zalo hoặc nền tảng bên thứ ba</li>
+              <li>Có thể kết nối API có sẵn để hiển thị dữ liệu</li>
+            </ul>
+            <p class="price">Chi phí tham khảo: ~ 8–20 triệu</p>
+          </div>
+          <div class="card">
+            <p class="meta meta-row"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="3"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a3 3 0 0 1 0 5.74"/></svg></span>02 — Mini App Business</p>
+            <p>Mini App có Backend &amp; cơ sở dữ liệu riêng, phục vụ nghiệp vụ chuyên sâu.</p>
+            <ul>
+              <li>Quản lý thông tin &amp; hồ sơ khách hàng</li>
+              <li>Sản phẩm, giỏ hàng, đơn hàng &amp; lịch sử mua hàng</li>
+              <li>Thanh toán trực tuyến / QR / cổng thanh toán</li>
+              <li>Tích điểm, thành viên, voucher &amp; ưu đãi</li>
+              <li>Thông báo &amp; chăm sóc khách hàng</li>
+              <li>Trang quản trị và báo cáo</li>
+              <li>Kết nối CRM, ERP, POS hoặc hệ thống doanh nghiệp</li>
+            </ul>
+            <p class="price">Chi phí tham khảo: ~ 16–50 triệu</p>
+          </div>
+        </div>
+        <div class="miniapp-shot">
+          <img src="assets/mini-app-zalo.jpg" alt="Zalo Mini App" />
+        </div>
+      </div>
+      <p class="foot">Mỗi Mini App được tư vấn và xây theo nhu cầu thực tế. Chi phí cụ thể sau khi khảo sát yêu cầu và phạm vi triển khai.</p>
+    </section>
+
+    <!-- 11. Web App -->
+    <section class="slide" style="gap: clamp(8px, 1.2vh, 14px);">
+      <span class="badge">KikiCMS Package</span>
+      <h2>Web App — Ứng dụng web theo yêu cầu</h2>
+      <div class="webapp-split">
+      <div class="webapp-packages">
+        <div class="card">
+          <p class="meta meta-row"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8"/><path d="M12 16v4"/></svg></span>01 — Web App Basic</p>
+          <ul>
+            <li>Giao diện Responsive đa thiết bị</li>
+            <li>Trang nội dung / Sản phẩm / Dịch vụ / Tin tức</li>
+            <li>Form đăng ký / Liên hệ / Nhận yêu cầu</li>
+            <li>Quản trị nội dung với KikiCMS</li>
+            <li>Phân quyền quản trị cơ bản</li>
+            <li>SEO, Domain, SSL &amp; triển khai hệ thống</li>
+          </ul>
+          <p class="price">Giá: Khoảng 8–15 triệu</p>
+        </div>
+        <div class="card">
+          <p class="meta meta-row"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="3"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a3 3 0 0 1 0 5.74"/></svg></span>02 — Web App Business</p>
+          <ul>
+            <li>Đăng ký / Đăng nhập &amp; hồ sơ khách hàng</li>
+            <li>Quản lý khách hàng / Sản phẩm / Dịch vụ</li>
+            <li>Đặt hàng / Đặt lịch / Gửi yêu cầu</li>
+            <li>Quản lý đơn &amp; trạng thái xử lý</li>
+            <li>Dashboard &amp; báo cáo cơ bản</li>
+            <li>Email / Zalo / Telegram Notification</li>
+            <li>API kết nối hệ thống bên thứ 3</li>
+          </ul>
+          <p class="price">Giá: Khoảng 15–30 triệu</p>
+        </div>
+        <div class="card">
+          <p class="meta meta-row"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9c0 .7.4 1.3 1 1.5H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>03 — Web App Advanced</p>
+          <ul>
+            <li>Quy trình nghiệp vụ &amp; phân quyền nâng cao</li>
+            <li>Thanh toán Online / Ví / Điểm thưởng</li>
+            <li>Workflow / Phê duyệt nhiều bước</li>
+            <li>Dashboard / Thống kê / Export dữ liệu</li>
+            <li>API / Webhook / Automation</li>
+            <li>Tích hợp CRM / ERP / hệ thống doanh nghiệp</li>
+            <li>Phát triển module riêng theo yêu cầu</li>
+          </ul>
+          <p class="price">Giá: Từ 30 triệu</p>
+        </div>
+      </div>
+        <div class="miniapp-shot">
+          <img src="assets/web-app.png" alt="Web App" />
+        </div>
+      </div>
+      <p class="foot">Thiết kế &amp; phát triển linh hoạt theo nghiệp vụ thực tế của doanh nghiệp. Chi phí chính thức được xác định sau khi khảo sát yêu cầu và phạm vi chức năng.</p>
+    </section>
+
+    <!-- 12. Telegram Shop Bot -->
+    <section class="slide" style="gap: clamp(8px, 1.2vh, 14px);">
+      <span class="badge">KikiCMS Package</span>
+      <h2>Telegram Shop Bot 1.0</h2>
+      <p class="caption" style="margin-top: -.35em;">Giải pháp bán hàng &amp; quản lý giao dịch trực tiếp trên Telegram</p>
+      <div class="tgbot-split">
+        <div class="tgbot-body">
+          <p class="meta">01. Tính năng chính</p>
+          <div class="tgbot-features">
+            <div class="card">
+              <div class="card-head"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="3"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a3 3 0 0 1 0 5.74"/></svg></span><h3>Khách hàng &amp; Ví</h3></div>
+              <ul>
+                <li>Hồ sơ và thông tin khách hàng</li>
+                <li>Quản lý ví, số dư tài khoản</li>
+                <li>Lịch sử nạp tiền &amp; mua hàng</li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="card-head"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/><path d="M3 4h2l2.2 11h9.6l2-8H7"/></svg></span><h3>Cửa hàng &amp; Đơn hàng</h3></div>
+              <ul>
+                <li>Danh mục và sản phẩm</li>
+                <li>Giá bán, tồn kho</li>
+                <li>Mua hàng trực tiếp bằng số dư</li>
+                <li>Tự động trừ tiền &amp; tạo đơn hàng</li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="card-head"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></span><h3>Nạp tiền &amp; Thanh toán</h3></div>
+              <ul>
+                <li>Tạo mã thanh toán riêng theo từng yêu cầu</li>
+                <li>QR chuyển khoản nhanh</li>
+                <li>Đối soát &amp; xác nhận giao dịch tự động*</li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="card-head"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9c0 .7.4 1.3 1 1.5H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><h3>CSKH &amp; Quản trị</h3></div>
+              <ul>
+                <li>Quy định, hướng dẫn &amp; thông tin CSKH</li>
+                <li>Web Admin: khách hàng, sản phẩm, đơn hàng, giao dịch</li>
+                <li>Database &amp; hạ tầng lưu trữ hình ảnh</li>
+              </ul>
+            </div>
+          </div>
+          <p class="meta">02. Tính năng mở rộng</p>
+          <p class="tgbot-extend"><strong>Khuyến nghị:</strong> Chuyển hoàn / hoàn số dư khi giao dịch hoặc đơn hàng phát sinh lỗi.</p>
+          <p class="tgbot-extend"><strong>Tùy chọn:</strong> Coupon &amp; mã giảm giá · Xuất Excel · Thống kê &amp; báo cáo khách hàng.</p>
+          <p class="tgbot-extend"><strong>Thanh toán nâng cao:</strong> Tự động xác nhận chuyển khoản với ngân hàng/cổng có API hoặc Webhook.</p>
+          <p class="price">Chi phí dự kiến: khoảng 8–15 triệu đồng<span>Tùy phạm vi chức năng, mức độ tự động hóa thanh toán và yêu cầu quản trị.</span></p>
+        </div>
+        <div class="miniapp-shot">
+          <img src="assets/telegram-shop-bot.png" alt="Telegram Shop Bot" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 13. Zalo Bot -->
+    <section class="slide" style="gap: clamp(8px, 1.2vh, 14px);">
+      <span class="badge">KikiCMS Package</span>
+      <h2>Zalo Bot 1.0</h2>
+      <p class="caption" style="margin-top: -.35em;">Tự động tiếp nhận thông tin &amp; gửi thông báo trực tiếp về Zalo</p>
+      <div class="tgbot-split">
+        <div class="tgbot-body">
+          <p class="tgbot-extend" style="margin-bottom: .15em;">Kết nối Website / Landing Page / Form / hệ thống doanh nghiệp với Zalo — thông tin mới chuyển ngay đến Zalo cá nhân hoặc Nhóm Zalo phụ trách.</p>
+          <p class="meta">Tính năng chính</p>
+          <div class="zalobot-features">
+            <div class="card">
+              <div class="card-head"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="3"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a3 3 0 0 1 0 5.74"/></svg></span><h3>Nhận thông tin khách hàng</h3></div>
+              <ul>
+                <li>Form liên hệ / yêu cầu tư vấn</li>
+                <li>Đăng ký dịch vụ</li>
+                <li>Yêu cầu báo giá</li>
+                <li>Đăng ký nhận thông tin</li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="card-head"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/><path d="M3 4h2l2.2 11h9.6l2-8H7"/></svg></span><h3>Nhận thông tin bán hàng</h3></div>
+              <ul>
+                <li>Đơn đặt hàng mới</li>
+                <li>Thông tin sản phẩm &amp; số lượng</li>
+                <li>Thông tin người đặt hàng</li>
+                <li>Ghi chú / yêu cầu đặc biệt</li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="card-head"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span><h3>Nhận yêu cầu CSKH</h3></div>
+              <ul>
+                <li>Yêu cầu hỗ trợ</li>
+                <li>Phản hồi / góp ý</li>
+                <li>Yêu cầu bảo hành / bảo trì</li>
+                <li>Đặt lịch hẹn / lịch tư vấn</li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="card-head"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></span><h3>Thông báo vận hành</h3></div>
+              <ul>
+                <li>Có giao dịch / yêu cầu mới</li>
+                <li>Thay đổi trạng thái đơn hàng</li>
+                <li>Cảnh báo hoặc sự kiện từ hệ thống*</li>
+                <li>Thông báo tùy chỉnh theo nghiệp vụ*</li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="card-head"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></span><h3>Gửi thông báo đến Zalo</h3></div>
+              <ul>
+                <li>Zalo cá nhân</li>
+                <li>Nhóm Zalo</li>
+                <li>Phân luồng đến từng nhóm phụ trách*</li>
+              </ul>
+            </div>
+          </div>
+          <p class="zalobot-note">* Tùy thuộc hệ thống/API cần kết nối. Chatbot, hội thoại hai chiều, AI, workflow nâng cao sẽ phát triển ở các phiên bản tiếp theo.</p>
+          <p class="price">Giá từ 1 triệu cho tới &gt; 1 triệu (theo chức năng)</p>
+        </div>
+        <div class="miniapp-shot">
+          <img src="assets/zalo-bot.png" alt="Zalo Bot" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 14. WordPress Care -->
+    <section class="slide" style="gap: clamp(12px, 1.8vh, 22px);">
+      <span class="badge">WordPress Support</span>
+      <h2>KikiCMS WordPress Care</h2>
+      <p class="caption">Website không nhất thiết do KikiCMS xây. Kiểm tra và xử lý sự cố WordPress đang vận hành.</p>
+      <p class="caption" style="margin-top: -.6em;">Lỗi · mã độc · virus · bảo mật · hoạt động bất thường</p>
+      <div class="grid-2" style="flex: 1;">
+        <div class="card">
+          <p class="meta meta-row"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-2.5 2.5-2.5z"/></svg></span>Basic</p>
+          <ul>
+            <li>Kiểm tra và xử lý sự cố</li>
+            <li>Xử lý bảo mật, mã độc/virus trong phạm vi dịch vụ</li>
+            <li>Khắc phục lỗi website</li>
+            <li>Bảo hành 07 ngày</li>
+          </ul>
+          <p class="price">Giá: 1.500.000đ</p>
+        </div>
+        <div class="card">
+          <p class="meta meta-row"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg></span>Advanced</p>
+          <ul>
+            <li>Bao gồm gói Basic</li>
+            <li>Bảo hành 30 ngày</li>
+            <li>Theo dõi website sau xử lý</li>
+            <li>Báo cáo 07 ngày/lần trong thời gian bảo hành</li>
+          </ul>
+          <p class="price">Giá: 3.000.000đ</p>
+        </div>
+      </div>
+      <p class="foot">Xử lý sự cố chỉ là bước đầu. Mục tiêu: website vận hành ổn định trở lại.</p>
+    </section>
+
+    <!-- 15. Section KikiMail -->
+    <section class="slide dark" style="justify-content: space-between;">
+      <p class="kicker">Phần 02</p>
+      <div>
+        <h1>KikiMail</h1>
+        <p class="lead" style="margin-top: .4em; max-width: 18em;">Email doanh nghiệp theo tên miền riêng</p>
+      </div>
+      <p class="caption">Website chuyên nghiệp cần một email chuyên nghiệp</p>
+    </section>
+
+    <!-- 16. KikiMail intro -->
+    <section class="slide" style="gap: clamp(10px, 1.6vh, 18px);">
+      <span class="badge">KikiMail</span>
+      <h2>Đổi Gmail cá nhân lấy email công ty</h2>
+      <div class="compare">
+        <div class="card" style="text-align: center; align-items: center; padding: clamp(10px, 1.4vh, 18px);">
+          <p class="caption">Thay vì</p>
+          <p class="mail bad">tenban@gmail.com</p>
+        </div>
+        <div class="plus" aria-hidden="true">→</div>
+        <div class="card" style="text-align: center; align-items: center; padding: clamp(10px, 1.4vh, 18px);">
+          <p class="caption">Doanh nghiệp dùng</p>
+          <p class="mail good">tenban@congty.com</p>
+        </div>
+      </div>
+      <div class="shot-row">
+        <img src="assets/hop-thu-den.png" alt="KikiMail — hộp thư đến" />
+        <img src="assets/phan-tich.png" alt="KikiMail — phân tích tên miền" />
+      </div>
+      <p class="foot">Tạo và quản lý email theo tên miền riêng trên hạ tầng Cloudflare — ổn định, dễ dùng, tối ưu chi phí.</p>
+    </section>
+
+    <!-- 17. Features -->
+    <section class="slide" style="gap: clamp(14px, 2vh, 24px);">
+      <span class="badge">Tính năng</span>
+      <h2>KikiMail có gì?</h2>
+      <div class="grid-3" style="flex: 1;">
+        <div class="card">
+          <div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></span><h3>Gửi email</h3></div>
+          <p>Giao dịch, thông báo, gửi hàng loạt và tệp đính kèm.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span><h3>Người dùng &amp; hộp thư</h3></div>
+          <p>Tên miền, tài khoản, phân quyền, hộp thư tập trung.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21.4 11.6l-8.5 8.5a5 5 0 0 1-7-7l9-9a3.2 3.2 0 0 1 4.5 4.5l-9.2 9.1a1.4 1.4 0 0 1-2-2l8.3-8.3"/></svg></span><h3>Tệp đính kèm</h3></div>
+          <p>Gửi, nhận và lưu trữ tệp, truy xuất thuận tiện.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 15v-4"/><path d="M12 15V8"/><path d="M16 15v-6"/></svg></span><h3>Dashboard</h3></div>
+          <p>Theo dõi gửi nhận và các chỉ số vận hành.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><h3>Phân quyền &amp; bảo mật</h3></div>
+          <p>Kiểm soát truy cập theo vai trò trong doanh nghiệp.</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a8 8 0 1 0-14.8 0"/><path d="M12 9v-2"/><path d="M16.2 10.8l1.4-1.4"/></svg></span><h3>Hiệu năng &amp; chi phí</h3></div>
+          <p>Hạ tầng Cloudflare: truy cập, ổn định, chi phí vận hành.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 18. Pricing -->
+    <section class="slide" style="gap: clamp(10px, 1.5vh, 18px);">
+      <span class="badge">Bảng giá</span>
+      <h2>Bắt đầu từ 19.000đ/tháng</h2>
+      <div class="price-grid">
+        <div class="plan-card">
+          <p class="plan-name">PRO 1</p>
+          <p class="plan-price">19.000đ<small>/tháng</small></p>
+          <ul>
+            <li>1 Mailbox</li>
+            <li>0 Mailing List</li>
+            <li>1 GB Dung lượng dùng chung</li>
+            <li>200 Email gửi/tháng</li>
+            <li>Giới hạn gửi: 30 email/mailbox/ngày</li>
+          </ul>
+        </div>
+        <div class="plan-card">
+          <p class="plan-name">PRO 2</p>
+          <p class="plan-price">39.000đ<small>/tháng</small></p>
+          <ul>
+            <li>5 Mailbox</li>
+            <li>2 Mailing List</li>
+            <li>5 GB Dung lượng dùng chung</li>
+            <li>1.000 Email gửi/tháng</li>
+            <li>Giới hạn gửi: 50 email/mailbox/ngày</li>
+          </ul>
+        </div>
+        <div class="plan-card featured">
+          <span class="plan-badge">Phổ biến nhất</span>
+          <p class="plan-name">PRO 3</p>
+          <p class="plan-price">69.000đ<small>/tháng</small></p>
+          <ul>
+            <li>10 Mailbox</li>
+            <li>5 Mailing List</li>
+            <li>15 GB Dung lượng dùng chung</li>
+            <li>2.500 Email gửi/tháng</li>
+            <li>Giới hạn gửi: 80 email/mailbox/ngày</li>
+          </ul>
+        </div>
+        <div class="plan-card">
+          <p class="plan-name">PRO 4</p>
+          <p class="plan-price">129.000đ<small>/tháng</small></p>
+          <ul>
+            <li>20 Mailbox</li>
+            <li>10 Mailing List</li>
+            <li>40 GB Dung lượng dùng chung</li>
+            <li>5.000 Email gửi/tháng</li>
+            <li>Giới hạn gửi: 100 email/mailbox/ngày</li>
+          </ul>
+        </div>
+        <div class="plan-card">
+          <p class="plan-name">PRO 5</p>
+          <p class="plan-price">199.000đ<small>/tháng</small></p>
+          <ul>
+            <li>50 Mailbox</li>
+            <li>20 Mailing List</li>
+            <li>100 GB Dung lượng dùng chung</li>
+            <li>10.000 Email gửi/tháng</li>
+            <li>Giới hạn gửi: 120 email/mailbox/ngày</li>
+          </ul>
+        </div>
+        <div class="plan-card">
+          <p class="plan-name">PRO 6</p>
+          <p class="plan-price">299.000đ<small>/tháng</small></p>
+          <ul>
+            <li>100 Mailbox</li>
+            <li>30 Mailing List</li>
+            <li>200 GB Dung lượng dùng chung</li>
+            <li>20.000 Email gửi/tháng</li>
+            <li>Giới hạn gửi: 150 email/mailbox/ngày</li>
+          </ul>
+        </div>
+      </div>
+      <p class="foot">Ưu đãi đặc biệt dành cho tên miền giáo dục: Giảm lên tới 50% tất cả các gói</p>
+    </section>
+
+    <!-- 19. Nana Lab -->
+    <section class="slide" style="gap: clamp(18px, 2.6vh, 32px); justify-content: center;">
+      <span class="badge">Đơn vị đại diện</span>
+      <h2>Nana Lab</h2>
+      <p class="lead" style="max-width: 24em;">Đồng hành từ tư vấn đến vận hành.</p>
+      <p style="max-width: 28em; font-size: clamp(20px, 1.8vw, 32px);">
+        Công ty TNHH Dịch vụ Truyền thông và Sáng tạo Nana Lab đại diện và hỗ trợ khách hàng Kiki Business Kit — KikiCMS và KikiMail.
+      </p>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.5-1.1a2 2 0 0 1 2.1-.4c.9.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg></span><h3>Điện thoại</h3></div>
+          <p>036.6967.084</p>
+          <p>098.3711.587</p>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><h3>Email</h3></div>
+          <p>info@kikicms.com</p>
+          <p>info@kikimail.vn</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 20. Close -->
+    <section class="slide dark" style="justify-content: space-between;">
+      <span class="badge">Kết</span>
+      <div style="display:flex; flex-direction:column; gap: clamp(16px, 2.4vh, 28px);">
+        <h1 style="font-size: clamp(36px, 3.8vw, 64px);">Từ KikiCMS đến KikiMail</h1>
+        <div class="grid-2">
+          <div>
+            <h3 class="card-head" style="color: #e08a58; margin-bottom: .35em;"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/><path d="M8 14h4"/></svg></span>KikiCMS</h3>
+            <p class="caption">Website · Web App · Mini App · Bot · domain · hosting · bảo trì</p>
+          </div>
+          <div>
+            <h3 class="card-head" style="color: #e08a58; margin-bottom: .35em;"><span class="ico ico-sm" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>KikiMail</h3>
+            <p class="caption">Email tên miền · hộp thư · gửi nhận · người dùng</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="lead" style="max-width: 24em;">Một bộ giải pháp gọn để bắt đầu và phát triển hiện diện số.</p>
+        <p class="caption" style="margin-top: .6em;">Không cần tìm từng nhà cung cấp cho từng mảnh ghép.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <nav id="nav">
+    <button id="prev" aria-label="Slide trước">&larr; Trước</button>
+    <div id="dots"></div>
+    <span id="counter"></span>
+    <button id="next" aria-label="Slide sau">Sau &rarr;</button>
+  </nav>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const dotsBox = document.getElementById('dots');
+    const counter = document.getElementById('counter');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    let current = slides.findIndex(s => s.classList.contains('active'));
+    if (current < 0) current = 0;
+
+    slides.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'dot';
+      d.setAttribute('aria-label', 'Slide ' + (i + 1));
+      d.addEventListener('click', () => go(i));
+      dotsBox.appendChild(d);
+    });
+    const dots = Array.from(dotsBox.children);
+
+    function render() {
+      slides.forEach((s, i) => s.classList.toggle('active', i === current));
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+      counter.textContent = (current + 1) + ' / ' + slides.length;
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === slides.length - 1;
+    }
+    function go(i) { current = Math.max(0, Math.min(slides.length - 1, i)); render(); }
+
+    prevBtn.addEventListener('click', () => go(current - 1));
+    nextBtn.addEventListener('click', () => go(current + 1));
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(current + 1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(current - 1); }
+      else if (e.key === 'Home') go(0);
+      else if (e.key === 'End') go(slides.length - 1);
+    });
+
+    render();
+  </script>
+</body>
+</html>

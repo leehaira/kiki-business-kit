@@ -1,7 +1,7 @@
-# Kiki Business Kit 1.0 — speaker notes
+# Kiki Business Kit 1.1 — speaker notes
 
 > Không chiếu. Dùng để chuẩn bị narrative, dàn bài, ghi chú nói.
-> Nguồn nội dung: `docs/plan/draft-slides-1.0.md`
+> Nguồn nội dung: `docs/plan/draft-slides-1.1.md`
 
 ## Dàn bài
 
@@ -14,27 +14,31 @@
 7. Cách tính chi phí
 8. Tên miền
 9. Close Hosting
-10. WordPress Care
-11. Phần 02 KikiMail (divider)
-12. Email tên miền vs Gmail
-13. Tính năng
-14. Bảng giá
-15. Nana Lab — liên hệ
-16. Kết
+10. Zalo Mini App (Basic / Business)
+11. Web App (Basic / Business / Advanced)
+12. Telegram Shop Bot 1.0
+13. Zalo Bot 1.0
+14. WordPress Care
+15. Phần 02 KikiMail (divider)
+16. Email tên miền vs Gmail
+17. Tính năng
+18. Bảng giá
+19. Nana Lab — liên hệ
+20. Kết
 
 ## Speaker notes theo slide
 
-- Slide 1 (Cover): Nêu bộ kit gồm hai trụ: website (KikiCMS) và email doanh nghiệp (KikiMail). Phiên bản 1.0 — gọn, đủ để bắt đầu hiện diện số.
+- Slide 1 (Cover): Nêu bộ kit gồm hai trụ: website (KikiCMS) và email doanh nghiệp (KikiMail). Phiên bản 1.1 — gọn, đủ để bắt đầu hiện diện số.
 
-- Slide 2 (Mở đầu): Liệt kê mảnh ghép doanh nghiệp thường phải mua rời. Điểm: Kit nối chúng lại, không phải “một website rồi xong”.
+- Slide 2 (Mở đầu): Hai nhóm — KikiCMS (website, domain, hosting, bảo trì + Mini App/Web App/Telegram/Zalo Bot) và KikiMail (Email doanh nghiệp, đặt dưới cùng). Điểm: Kit nối chúng lại.
 
-- Slide 3 (Divider KikiCMS): Chuyển phần. Một câu: từ ý tưởng đến website vận hành.
+- Slide 3 (Divider KikiCMS): Khung phần — không chỉ website: Website DN → Web App → Zalo Mini App → Telegram Bot → Zalo Bot.
 
-- Slide 4 (Loại website): Bốn hướng phổ biến. Nhấn: không chỉ bàn giao file — đồng hành từ bài toán đến vận hành.
+- Slide 4 (Loại website): Bốn hướng — Landing từ 3tr, Corporate từ 5tr, Brand từ 8tr, Sales từ 10tr; đã gồm thiết kế. Nhấn: không chỉ bàn giao file.
 
-- Slide 5 (Quy trình): Đi 01→05. Figma ở bước thiết kế. Bước 04 là chỗ custom. Bước 05 gồm hosting/bảo trì.
+- Slide 5 (Quy trình): Đi 01→05. Bên phải: mockup website PC + mobile (`web-pc`, `web-mobile`). Figma ở bước thiết kế. Bước 04 là chỗ custom. Bước 05 gồm hosting/bảo trì.
 
-- Slide 6 (Ba kiến trúc): Standard cho phần lớn khách. Headless khi cần tốc độ/tách FE. Advanced (Cloudflare + Worker) khi bài toán lớn. Không ép stack.
+- Slide 6 (Ba kiến trúc): Standard cho phần lớn khách. Pro (Headless) khi cần tốc độ/tách FE. Advanced (Cloudflare + Worker) khi bài toán lớn. Không ép stack.
 
 - Slide 7 (Chi phí): Không niêm yết giá website cố định. Năm trục: quy mô, UI, chức năng, công nghệ, tích hợp.
 
@@ -42,16 +46,24 @@
 
 - Slide 9 (Hosting): Close Hosting = hosting + chăm sóc. Free năm 1 kèm điều kiện làm website KikiCMS. Đọc bảng năm sau. Kèm bandwidth/bảo trì/support.
 
-- Slide 10 (WordPress Care): Nhận site không do mình làm. Basic 1.5tr / 7 ngày; Advanced 3tr / 30 ngày + theo dõi + báo cáo 7 ngày/lần. Mục tiêu: ổn định, không chỉ “vá xong”.
+- Slide 10 (Zalo Mini App): Basic (~8–20tr) không backend riêng; Business (~16–50tr) có DB/backend, thanh toán, CRM. Ảnh demo `mini-app-zalo.jpg`. Chi phí sau khảo sát.
 
-- Slide 11 (Divider KikiMail): Website đẹp mà mail @gmail là lệch chuyên nghiệp.
+- Slide 11 (Web App): Ba gói — Basic ~8–15tr (nội dung/CMS), Business ~15–30tr (khách hàng/đơn/notification/API), Advanced từ 30tr (workflow/thanh toán/CRM-ERP/module riêng). Chi phí chính thức sau khảo sát.
 
-- Slide 12 (Gmail → domain): Ví dụ tenban@congty.com. Chỉ hai ảnh: hộp thư đến (trái) và phân tích (phải). Hạ tầng Cloudflare.
+- Slide 12 (Telegram Shop Bot): Bán hàng trên Telegram — ví, cửa hàng, nạp tiền/QR, CSKH + Web Admin. Mở rộng: hoàn số dư, coupon, Excel, webhook ngân hàng. Chi phí ~8–15tr. Ảnh `telegram-shop-bot.png`.
 
-- Slide 13 (Tính năng): Sáu nhóm — gửi, user/mailbox, file, dashboard, quyền, chi phí/hiệu năng. Không demo product trên slide.
+- Slide 13 (Zalo Bot): Đẩy form/đơn hàng/CSKH/sự kiện hệ thống về Zalo cá nhân hoặc nhóm. Giá từ 1 triệu trở lên theo chức năng. Chatbot/AI hai chiều là bản sau. Ảnh `zalo-bot.png`.
 
-- Slide 14 (Giá): Đọc PRO 3 là gói phổ biến. Khẳng định số khớp bảng công khai hiện tại — nếu giá đổi, sửa slide trước khi đi khách.
+- Slide 14 (WordPress Care): Nhận site không do mình làm. Basic 1.5tr / 7 ngày; Advanced 3tr / 30 ngày + theo dõi + báo cáo 7 ngày/lần. Mục tiêu: ổn định, không chỉ “vá xong”.
 
-- Slide 15 (Nana Lab): Đơn vị đại diện. Đọc SĐT và hai email CMS/Mail.
+- Slide 15 (Divider KikiMail): Website đẹp mà mail @gmail là lệch chuyên nghiệp.
 
-- Slide 16 (Kết): CMS + Mail = đủ để khách tìm thấy và để DN nói chuyện chuyên nghiệp. Câu chốt: bắt đầu hiện diện số, sẵn sàng phát triển.
+- Slide 16 (Gmail → domain): Ví dụ tenban@congty.com. Chỉ hai ảnh: hộp thư đến (trái) và phân tích (phải). Hạ tầng Cloudflare.
+
+- Slide 17 (Tính năng): Sáu nhóm — gửi, user/mailbox, file, dashboard, quyền, chi phí/hiệu năng. Không demo product trên slide.
+
+- Slide 18 (Giá): Lưới 6 gói PRO 1–6 theo web KikiMail; PRO 3 nổi “Phổ biến nhất”. Có Mailing List + giới hạn gửi/ngày. Không nút CTA.
+
+- Slide 19 (Nana Lab): Đơn vị đại diện. Đọc SĐT và hai email CMS/Mail.
+
+- Slide 20 (Kết): Echo cover — Từ KikiCMS đến KikiMail. CMS = website + Web App + Mini App + Bot + domain/hosting. Mail = email DN. Chốt: một bộ giải pháp gọn, không phải ghép từng vendor.
